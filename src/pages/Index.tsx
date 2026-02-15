@@ -115,11 +115,14 @@ const Index = () => {
           />
         </div>
 
-        <TermsAndConditions
-          accepted={form.tcAccepted}
-          onAcceptChange={form.setTcAccepted}
-          customerName={form.handover.customerName}
-        />
+        {/* Print group: Terms & Conditions on its own page */}
+        <div className="print-page-group">
+          <TermsAndConditions
+            accepted={form.tcAccepted}
+            onAcceptChange={form.setTcAccepted}
+            customerName={form.handover.customerName}
+          />
+        </div>
 
         {/* Action buttons */}
         <div className="flex flex-wrap gap-3 mt-8 pt-6 border-t border-border no-print">
