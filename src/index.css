@@ -2,87 +2,78 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
-
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 0 0% 99%;
+    --foreground: 220 25% 10%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 220 25% 10%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 220 25% 10%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 220 50% 18%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 220 15% 95%;
+    --secondary-foreground: 220 25% 15%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 220 12% 95%;
+    --muted-foreground: 220 10% 45%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 215 70% 50%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 75% 55%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --success: 145 60% 38%;
+    --success-foreground: 0 0% 100%;
 
-    --radius: 0.5rem;
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 10%;
+
+    --border: 220 15% 88%;
+    --input: 220 15% 88%;
+    --ring: 215 70% 50%;
+
+    --radius: 0.375rem;
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
+    --background: 220 25% 6%;
+    --foreground: 210 40% 95%;
+    --card: 220 25% 8%;
+    --card-foreground: 210 40% 95%;
+    --popover: 220 25% 8%;
+    --popover-foreground: 210 40% 95%;
+    --primary: 215 70% 55%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 220 20% 15%;
+    --secondary-foreground: 210 40% 95%;
+    --muted: 220 20% 15%;
+    --muted-foreground: 215 15% 60%;
+    --accent: 215 70% 50%;
+    --accent-foreground: 0 0% 100%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --success: 145 60% 38%;
+    --success-foreground: 0 0% 100%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 10%;
+    --border: 220 20% 18%;
+    --input: 220 20% 18%;
+    --ring: 215 70% 50%;
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -101,5 +92,148 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
+}
+
+/* Section styling */
+.pdi-section {
+  @apply mb-8 pb-8 border-b border-border last:border-b-0;
+}
+
+.pdi-section-header {
+  @apply flex items-center gap-3 mb-6;
+}
+
+.pdi-section-number {
+  @apply flex items-center justify-center w-8 h-8 rounded-full bg-primary text-primary-foreground text-sm font-bold shrink-0;
+}
+
+.pdi-section-title {
+  @apply text-lg font-semibold text-foreground;
+}
+
+/* Panel styling for vehicle diagrams */
+.panel-cell {
+  @apply border border-border rounded-sm p-2 text-center text-xs font-medium cursor-pointer transition-all duration-150 select-none relative;
+  @apply bg-secondary/50 hover:bg-accent/20 hover:border-accent;
+}
+
+.panel-cell.has-damage {
+  @apply ring-2 ring-destructive/40 bg-destructive/5;
+}
+
+.panel-cell.selected {
+  @apply ring-2 ring-accent bg-accent/10;
+}
+
+/* Damage badges */
+.damage-badge {
+  @apply inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-medium;
+}
+
+/* Pass/Fail indicators */
+.status-pass {
+  @apply text-success font-semibold;
+}
+
+.status-fail {
+  @apply text-destructive font-semibold;
+}
+
+.status-warn {
+  @apply text-warning font-semibold;
+}
+
+/* Signature pad */
+.signature-canvas {
+  @apply w-full h-32 cursor-crosshair touch-none border-b border-border;
+  background: linear-gradient(to bottom, transparent calc(100% - 1px), hsl(var(--border)) calc(100% - 1px));
+  background-size: 100% 2rem;
+}
+
+/* Print styles */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 12mm 15mm;
+  }
+
+  body {
+    font-size: 10pt !important;
+    color: #000 !important;
+    background: #fff !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+
+  .pdi-section {
+    page-break-inside: avoid;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 12pt;
+    padding-bottom: 12pt;
+  }
+
+  .pdi-container {
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  h1 { font-size: 16pt !important; }
+  h2 { font-size: 12pt !important; }
+
+  input, select, textarea {
+    border: none !important;
+    background: none !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .panel-cell {
+    border: 1px solid #ccc !important;
+    background: #f9f9f9 !important;
+  }
+
+  .panel-cell.has-damage {
+    background: #fee2e2 !important;
+    border-color: #ef4444 !important;
+  }
+
+  button:not(.print-include) {
+    display: none !important;
+  }
+
+  .signature-canvas {
+    border: 1px solid #ccc !important;
+  }
+
+  .print-footer {
+    display: block !important;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 7pt;
+    color: #666;
+    border-top: 1px solid #ddd;
+    padding-top: 4pt;
+  }
+}
+
+.print-only {
+  display: none;
+}
+
+.print-footer {
+  display: none;
 }
