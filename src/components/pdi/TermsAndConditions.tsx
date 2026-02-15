@@ -29,7 +29,7 @@ export const TermsAndConditions = ({ accepted, onAcceptChange, customerName }: P
         </button>
       </div>
 
-      <div className={`px-5 py-4 text-sm leading-relaxed space-y-4 ${expanded ? '' : 'hidden'} print-show`}>
+      <div className={`px-5 py-4 text-sm leading-relaxed space-y-4 tc-print-compact ${expanded ? '' : 'hidden'} print-show`}>
         <p className="text-xs text-muted-foreground italic">(Motor Vehicle Sales – On-Site, Distance, Finance &amp; PCP)</p>
 
         <div className="space-y-3">
