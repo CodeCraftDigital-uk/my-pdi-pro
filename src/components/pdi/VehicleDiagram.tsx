@@ -132,9 +132,9 @@ export const VehicleDiagram = ({ damages, damageNotes, onAddDamage, onRemoveDama
 
       <div className="border border-border rounded-lg p-4 bg-card">
         <div className="flex justify-center">
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center print-diagram-horizontal">
             <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Plan View</p>
-            <svg viewBox="60 0 240 420" className="w-full max-w-[300px]" style={{ height: 'auto' }}>
+            <svg viewBox="60 0 240 420" className="w-full max-w-[300px] vehicle-diagram-svg" style={{ height: 'auto' }}>
               <g fill="none" stroke="hsl(220,25%,20%)" strokeWidth="1.5" strokeLinejoin="round">
                 <path d="M 135,10 Q 180,5 225,10 Q 240,12 245,30 L 265,45 Q 275,55 275,90 L 275,160 L 275,280 Q 275,320 272,340 L 265,370 Q 260,385 240,395 L 235,405 Q 180,415 125,405 L 120,395 Q 100,385 95,370 L 88,340 Q 85,320 85,280 L 85,160 L 85,90 Q 85,55 95,45 L 115,30 Q 120,12 135,10 Z" />
                 <path d="M 105,130 L 255,130" />

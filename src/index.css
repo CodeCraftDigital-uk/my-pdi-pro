@@ -335,6 +335,19 @@
     max-height: 280px !important;
   }
 
+  /* Rotate vehicle diagram to horizontal in print */
+  .print-diagram-horizontal {
+    width: 100% !important;
+  }
+
+  .vehicle-diagram-svg {
+    transform: rotate(-90deg) !important;
+    max-width: none !important;
+    width: 200px !important;
+    height: 140px !important;
+    margin: -20px auto !important;
+  }
+
   .panel-cell {
     border: 1px solid #ccc !important;
     background: #f9f9f9 !important;
