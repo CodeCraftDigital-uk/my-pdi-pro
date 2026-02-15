@@ -152,7 +152,7 @@
   background-size: 100% 2rem;
 }
 
-/* Print styles */
+/* Print styles — normalised across mobile & desktop */
 @media print {
   @page {
     size: A4 portrait;
@@ -161,6 +161,14 @@
 
   * {
     box-sizing: border-box !important;
+    -webkit-text-size-adjust: 100% !important;
+    text-size-adjust: 100% !important;
+    float: none !important;
+  }
+
+  html {
+    font-size: 8pt !important;
+    -webkit-text-size-adjust: 100% !important;
   }
 
   body {
@@ -172,6 +180,17 @@
     print-color-adjust: exact;
     margin: 0 !important;
     padding: 0 !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    overflow: visible !important;
+  }
+
+  #root {
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    text-align: left !important;
   }
 
   .no-print {
@@ -204,6 +223,27 @@
     padding: 0 !important;
     margin: 0 !important;
     width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  /* Force all flex containers to behave consistently */
+  .flex, [class*="flex"] {
+    flex-wrap: wrap !important;
+  }
+
+  /* Force grid layouts to consistent columns */
+  .grid-cols-1 { grid-template-columns: 1fr !important; }
+  .sm\\:grid-cols-2, .md\\:grid-cols-2, .lg\\:grid-cols-2 {
+    grid-template-columns: 1fr 1fr !important;
+  }
+  .sm\\:grid-cols-3, .md\\:grid-cols-3, .lg\\:grid-cols-3 {
+    grid-template-columns: 1fr 1fr 1fr !important;
+  }
+  .sm\\:grid-cols-4, .md\\:grid-cols-4, .lg\\:grid-cols-4 {
+    grid-template-columns: 1fr 1fr 1fr 1fr !important;
+  }
+  .sm\\:grid-cols-5, .md\\:grid-cols-5, .lg\\:grid-cols-5 {
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr !important;
   }
 
   h1 { font-size: 12pt !important; margin-bottom: 2pt !important; }
@@ -253,6 +293,23 @@
     min-height: 0 !important;
     height: auto !important;
     line-height: 1.2 !important;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+  }
+
+  /* Select trigger buttons (Radix) should show value in print */
+  [role="combobox"], button[data-state] {
+    border: none !important;
+    background: none !important;
+    padding: 0 !important;
+    font-size: 8pt !important;
+    height: auto !important;
+    min-height: 0 !important;
+  }
+
+  /* Hide select chevrons in print */
+  [role="combobox"] svg, button[data-state] svg {
+    display: none !important;
   }
 
   /* Grids */
