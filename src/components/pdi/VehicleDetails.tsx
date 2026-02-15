@@ -44,7 +44,7 @@ export const VehicleDetails = ({ data, onUpdate }: Props) => {
       <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{label}</Label>
       <Popover>
         <PopoverTrigger asChild>
-          <Button variant="outline" className={cn("w-full justify-start text-left font-normal bg-card", !data[key] && "text-muted-foreground")}>
+          <Button variant="outline" className={cn("w-full justify-start text-left font-normal bg-card print:hidden", !data[key] && "text-muted-foreground")}>
             <CalendarIcon className="mr-2 h-4 w-4" />
             {data[key] ? format(data[key]!, 'dd/MM/yyyy') : 'Select date'}
           </Button>
@@ -53,6 +53,7 @@ export const VehicleDetails = ({ data, onUpdate }: Props) => {
           <Calendar mode="single" selected={data[key]} onSelect={(d) => onUpdate(key, d)} initialFocus className="p-3 pointer-events-auto" />
         </PopoverContent>
       </Popover>
+      <span className="hidden print:block text-sm">{data[key] ? format(data[key]!, 'dd/MM/yyyy') : '—'}</span>
     </div>
   );
 

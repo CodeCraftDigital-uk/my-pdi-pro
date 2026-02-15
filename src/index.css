@@ -187,10 +187,16 @@
   }
 
   .pdi-section {
-    page-break-inside: avoid;
     border-bottom: 1px solid #ddd;
     margin-bottom: 4pt;
     padding-bottom: 4pt;
+  }
+
+  /* Keep grouped sections together on the same page */
+  .print-page-group {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    page-break-before: auto;
   }
 
   .pdi-container {
