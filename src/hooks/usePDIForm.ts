@@ -28,7 +28,7 @@ export const usePDIForm = () => {
     { position: 'Front Right (FR)', treadDepth: '' },
     { position: 'Rear Left (RL)', treadDepth: '' },
     { position: 'Rear Right (RR)', treadDepth: '' },
-    { position: 'Spare', treadDepth: '' },
+    { position: 'Spare (if fitted)', treadDepth: '' },
   ]);
 
   const [brakeMeasurements, setBrakeMeasurements] = useState<BrakeMeasurement[]>([
