@@ -85,13 +85,12 @@ const Index = () => {
           />
         </div>
 
-        {/* Print group: Tyres + Brakes + Mechanical on same page */}
+        {/* Print group: Tyres + Mechanical + CRA on same page */}
         <div className="print-page-group">
           <TyreSection
             measurements={form.tyreMeasurements}
             onUpdate={form.updateTyre}
           />
-
 
           <MechanicalChecklist
             checks={form.mechanicalChecks}
@@ -99,17 +98,17 @@ const Index = () => {
             notes={form.mechanicalNotes}
             onNotesChange={form.setMechanicalNotes}
           />
-        </div>
 
-        {/* Print group: CRA + Handover + Signatures on same page */}
-        <div className="print-page-group">
           <CRACompliance
             checks={form.craChecks}
             onToggle={form.toggleCRA}
             confirmed={form.craConfirmed}
             onConfirmChange={form.setCraConfirmed}
           />
+        </div>
 
+        {/* Print group: Handover + Signatures on same page */}
+        <div className="print-page-group">
           <CustomerHandover
             data={form.handover}
             onUpdate={form.updateHandover}
