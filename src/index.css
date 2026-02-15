@@ -355,24 +355,32 @@
   }
 
   /* T&C section compact print */
+  .tc-print-compact {
+    columns: 2 !important;
+    column-gap: 8pt !important;
+    padding: 2pt !important;
+  }
+
   .tc-print-compact h3 {
-    font-size: 6pt !important;
+    font-size: 5pt !important;
+    font-weight: 700 !important;
     margin-bottom: 0 !important;
-    margin-top: 2pt !important;
+    margin-top: 1pt !important;
+    break-after: avoid !important;
   }
 
   .tc-print-compact p {
-    font-size: 5.5pt !important;
-    line-height: 1.25 !important;
+    font-size: 4.5pt !important;
+    line-height: 1.2 !important;
     margin-bottom: 0 !important;
   }
 
   .tc-print-compact .space-y-3 > * + * {
-    margin-top: 1pt !important;
+    margin-top: 0.5pt !important;
   }
 
   .tc-print-compact .space-y-4 > * + * {
-    margin-top: 1pt !important;
+    margin-top: 0.5pt !important;
   }
 
   /* Prevent orphan text */
