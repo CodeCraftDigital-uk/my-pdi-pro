@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Damage, DamageType, DAMAGE_COLORS, DAMAGE_LABELS } from '@/types/pdi';
 import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Paintbrush, X } from 'lucide-react';
 
 const DAMAGE_TYPES: DamageType[] = ['scratch', 'dent', 'chip', 'scuff', 'crack'];
@@ -158,30 +158,46 @@ export const VehicleDiagram = ({ damages, damageNotes, onAddDamage, onRemoveDama
         </div>
       </div>
 
-      {/* Wheel positions */}
+      {/* Wheel positions with inline dropdown */}
       <div className="mt-6">
         <p className="text-sm font-medium mb-2">Wheel Condition</p>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {WHEEL_POSITIONS.map(pos => {
             const wheelDamages = getPanelDamages(`Wheel ${pos}`, 'wheels');
             return (
-              <div
-                key={pos}
-                className={`panel-cell ${wheelDamages.length > 0 ? 'has-damage' : ''} ${
-                  selectedPanel?.panel === `Wheel ${pos}` ? 'selected' : ''
-                }`}
-                onClick={() => handleZoneClick(`Wheel ${pos}`, 'wheels')}
-              >
-                <span className="font-semibold text-xs">{pos}</span>
-                {wheelDamages.length > 0 && (
-                  <div className="flex flex-wrap gap-0.5 mt-0.5 justify-center">
-                    {wheelDamages.map(d => (
-                      <span key={d.id} className="damage-badge" style={{ backgroundColor: DAMAGE_COLORS[d.type], color: '#fff' }}>
-                        {DAMAGE_LABELS[d.type]}
-                      </span>
+              <div key={pos} className="space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <span className="font-semibold text-xs">{pos}</span>
+                  {wheelDamages.length > 0 && (
+                    <div className="flex flex-wrap gap-0.5">
+                      {wheelDamages.map(d => (
+                        <span key={d.id} className="damage-badge" style={{ backgroundColor: DAMAGE_COLORS[d.type], color: '#fff' }}>
+                          {DAMAGE_LABELS[d.type]}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                <Select
+                  value=""
+                  onValueChange={(type: string) => {
+                    onAddDamage({ panel: `Wheel ${pos}`, view: 'wheels', type: type as DamageType });
+                  }}
+                >
+                  <SelectTrigger className="bg-card text-xs h-8">
+                    <SelectValue placeholder="Add damage..." />
+                  </SelectTrigger>
+                  <SelectContent className="bg-popover z-50">
+                    {DAMAGE_TYPES.map(t => (
+                      <SelectItem key={t} value={t} className="text-xs capitalize">
+                        <span className="flex items-center gap-2">
+                          <span className="w-2 h-2 rounded-full inline-block" style={{ backgroundColor: DAMAGE_COLORS[t] }} />
+                          {t}
+                        </span>
+                      </SelectItem>
                     ))}
-                  </div>
-                )}
+                  </SelectContent>
+                </Select>
               </div>
             );
           })}
