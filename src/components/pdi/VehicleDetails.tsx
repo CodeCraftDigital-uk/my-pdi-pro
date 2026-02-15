@@ -60,13 +60,14 @@ export const VehicleDetails = ({ data, onUpdate }: Props) => {
     <div className="space-y-1.5">
       <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{label}</Label>
       <Select value={data[key] as string} onValueChange={(v) => onUpdate(key, v)}>
-        <SelectTrigger className="bg-card">
+        <SelectTrigger className="bg-card print:hidden">
           <SelectValue placeholder={`Select ${label.toLowerCase()}`} />
         </SelectTrigger>
         <SelectContent>
           {options.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}
         </SelectContent>
       </Select>
+      <span className="hidden print:block text-sm">{(data[key] as string) || '—'}</span>
     </div>
   );
 
