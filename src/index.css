@@ -341,6 +341,27 @@
     margin-bottom: 0 !important;
   }
 
+  /* T&C section compact print */
+  .tc-print-compact h3 {
+    font-size: 6pt !important;
+    margin-bottom: 0 !important;
+    margin-top: 2pt !important;
+  }
+
+  .tc-print-compact p {
+    font-size: 5.5pt !important;
+    line-height: 1.25 !important;
+    margin-bottom: 0 !important;
+  }
+
+  .tc-print-compact .space-y-3 > * + * {
+    margin-top: 1pt !important;
+  }
+
+  .tc-print-compact .space-y-4 > * + * {
+    margin-top: 1pt !important;
+  }
+
   /* Prevent orphan text */
   p, li, label {
     orphans: 2;
