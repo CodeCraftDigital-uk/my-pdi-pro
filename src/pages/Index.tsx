@@ -36,16 +36,23 @@ const Index = () => {
     setShowConfirm(true);
   };
 
+  const printWithReportName = () => {
+    const originalTitle = document.title;
+    document.title = form.reportId;
+    window.print();
+    document.title = originalTitle;
+  };
+
   const handleConfirmAndPrint = () => {
     setShowConfirm(false);
     setShowSuccess(true);
     setTimeout(() => {
-      window.print();
+      printWithReportName();
     }, 300);
   };
 
   const handlePrintOnly = () => {
-    window.print();
+    printWithReportName();
   };
 
   return (
@@ -142,7 +149,7 @@ const Index = () => {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
                 return;
               }
-              window.print();
+              printWithReportName();
             }}
             variant="outline"
             size="lg"
