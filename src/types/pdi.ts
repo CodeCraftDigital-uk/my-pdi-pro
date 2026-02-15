@@ -43,6 +43,7 @@ export interface HandoverData {
   v5cPresent: boolean;
   serviceHistoryPresent: boolean;
   serviceHistoryType: string;
+  motExpiryDate: string;
   documentationReceived: boolean;
   customerName: string;
   salesRepName: string;
