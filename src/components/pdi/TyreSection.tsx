@@ -42,7 +42,12 @@ export const TyreSection = ({ measurements, onUpdate }: Props) => {
               const status = getStatus(m.treadDepth);
               return (
                 <tr key={m.position} className="border-b border-border/50">
-                  <td className="py-2 px-3 font-medium">{m.position}</td>
+                  <td className="py-2 px-3 font-medium">
+                    {m.position}
+                    {m.position.includes('Spare') && (
+                      <span className="text-xs text-muted-foreground ml-1 italic">— Optional</span>
+                    )}
+                  </td>
                   <td className="py-2 px-3">
                     <Input
                       type="text"
