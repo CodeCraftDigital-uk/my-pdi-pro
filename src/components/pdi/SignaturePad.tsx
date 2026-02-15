@@ -83,7 +83,7 @@ export const SignaturePad = ({ label, signature, onSignatureChange }: Props) => 
       <label className="text-sm font-medium text-foreground mb-2 block">{label}</label>
       <div className="border border-border rounded-lg overflow-hidden bg-card">
         {signature ? (
-          <img src={signature} alt={label} className="w-full h-32 object-contain" />
+          <img src={signature} alt={label} className="w-full h-32 print:h-[35px] object-contain" />
         ) : (
           <canvas
             ref={canvasRef}
