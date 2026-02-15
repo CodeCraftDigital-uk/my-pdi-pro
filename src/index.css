@@ -156,15 +156,21 @@
 @media print {
   @page {
     size: A4 portrait;
-    margin: 12mm 15mm;
+    margin: 8mm 10mm;
+  }
+
+  * {
+    box-sizing: border-box !important;
   }
 
   body {
-    font-size: 10pt !important;
+    font-size: 9pt !important;
     color: #000 !important;
     background: #fff !important;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
   .no-print {
@@ -178,24 +184,82 @@
   .pdi-section {
     page-break-inside: avoid;
     border-bottom: 1px solid #ddd;
-    margin-bottom: 12pt;
-    padding-bottom: 12pt;
+    margin-bottom: 8pt;
+    padding-bottom: 8pt;
   }
 
   .pdi-container {
     max-width: 100% !important;
     padding: 0 !important;
     margin: 0 !important;
+    width: 100% !important;
   }
 
-  h1 { font-size: 16pt !important; }
-  h2 { font-size: 12pt !important; }
+  h1 { font-size: 14pt !important; }
+  h2 { font-size: 11pt !important; }
+  h3 { font-size: 10pt !important; }
+
+  .pdi-section-header {
+    margin-bottom: 4pt !important;
+  }
+
+  .pdi-section-number {
+    width: 20px !important;
+    height: 20px !important;
+    font-size: 8pt !important;
+  }
+
+  .pdi-section-title {
+    font-size: 11pt !important;
+  }
 
   input, select, textarea {
     border: none !important;
     background: none !important;
     padding: 0 !important;
     box-shadow: none !important;
+    font-size: 9pt !important;
+    min-height: 0 !important;
+    height: auto !important;
+  }
+
+  /* Ensure grid layouts don't overflow */
+  .grid {
+    gap: 4px !important;
+  }
+
+  /* Tables */
+  table {
+    font-size: 8pt !important;
+    width: 100% !important;
+  }
+
+  th, td {
+    padding: 2pt 4pt !important;
+  }
+
+  /* Cards */
+  .rounded-lg, .rounded-xl {
+    border-radius: 4px !important;
+  }
+
+  [class*="p-6"], [class*="p-8"] {
+    padding: 8pt !important;
+  }
+
+  [class*="mb-6"], [class*="mb-8"] {
+    margin-bottom: 6pt !important;
+  }
+
+  [class*="gap-6"], [class*="gap-8"] {
+    gap: 4pt !important;
+  }
+
+  /* SVG diagrams */
+  svg {
+    max-width: 100% !important;
+    height: auto !important;
+    page-break-inside: avoid;
   }
 
   .panel-cell {
@@ -216,6 +280,25 @@
     border: 1px solid #ccc !important;
   }
 
+  /* Checkboxes print visible */
+  [role="checkbox"] {
+    border: 1px solid #333 !important;
+    width: 12px !important;
+    height: 12px !important;
+  }
+
+  /* Badges and labels */
+  .badge, [class*="badge"] {
+    font-size: 7pt !important;
+    padding: 1px 4px !important;
+  }
+
+  /* Prevent orphan text */
+  p, li, label {
+    orphans: 2;
+    widows: 2;
+  }
+
   .print-footer {
     display: block !important;
     position: fixed;
@@ -226,7 +309,7 @@
     font-size: 7pt;
     color: #666;
     border-top: 1px solid #ddd;
-    padding-top: 4pt;
+    padding-top: 3pt;
   }
 }
 
