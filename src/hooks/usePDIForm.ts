@@ -42,6 +42,7 @@ export const usePDIForm = () => {
   const [mechanicalNotes, setMechanicalNotes] = useState('');
   const [craChecks, setCraChecks] = useState<Record<string, boolean>>({});
   const [craConfirmed, setCraConfirmed] = useState(false);
+  const [tcAccepted, setTcAccepted] = useState(false);
 
   const [handover, setHandover] = useState<HandoverData>({
     vehicleInspected: false, cosmeticAccepted: false, mileageConfirmed: false,
@@ -94,10 +95,11 @@ export const usePDIForm = () => {
       errors.push('Handover mileage cannot be less than PDI mileage');
     }
     if (!craConfirmed) errors.push('CRA 2015 declaration must be confirmed');
+    if (!tcAccepted) errors.push('Terms & Conditions must be accepted');
     const hasAnyTyre = tyreMeasurements.some(t => t.treadDepth !== '');
     if (!hasAnyTyre) errors.push('At least one tyre measurement is required');
     return errors;
-  }, [vehicleDetails, craConfirmed, tyreMeasurements]);
+  }, [vehicleDetails, craConfirmed, tcAccepted, tyreMeasurements]);
 
   return {
     reportId, reportDate, logo, setLogo,
@@ -107,6 +109,7 @@ export const usePDIForm = () => {
     brakeMeasurements, updateBrake,
     mechanicalChecks, toggleMechanical, mechanicalNotes, setMechanicalNotes,
     craChecks, toggleCRA, craConfirmed, setCraConfirmed,
+    tcAccepted, setTcAccepted,
     handover, updateHandover,
     validate,
   };

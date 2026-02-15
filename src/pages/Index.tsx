@@ -8,6 +8,7 @@ import { BrakeSection } from '@/components/pdi/BrakeSection';
 import { MechanicalChecklist } from '@/components/pdi/MechanicalChecklist';
 import { CRACompliance } from '@/components/pdi/CRACompliance';
 import { CustomerHandover } from '@/components/pdi/CustomerHandover';
+import { TermsAndConditions } from '@/components/pdi/TermsAndConditions';
 import { Button } from '@/components/ui/button';
 import { Printer, Download, AlertCircle, CheckCircle2 } from 'lucide-react';
 import {
@@ -108,6 +109,12 @@ const Index = () => {
         <CustomerHandover
           data={form.handover}
           onUpdate={form.updateHandover}
+        />
+
+        <TermsAndConditions
+          accepted={form.tcAccepted}
+          onAcceptChange={form.setTcAccepted}
+          customerName={form.handover.customerName}
         />
 
         {/* Action buttons */}
