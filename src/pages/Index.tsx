@@ -66,8 +66,6 @@ const Index = () => {
         <HeaderSection
           reportId={form.reportId}
           reportDate={form.reportDate}
-          logo={form.logo}
-          onLogoChange={form.setLogo}
         />
 
         <VehicleDetails
