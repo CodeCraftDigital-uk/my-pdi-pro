@@ -234,6 +234,13 @@
     gap: 2px !important;
   }
 
+  /* Force 2-col grid for vehicle details in print */
+  .print-grid-2 {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 2pt 8pt !important;
+  }
+
   /* Tables */
   table {
     font-size: 7pt !important;

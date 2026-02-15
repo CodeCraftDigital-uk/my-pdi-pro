@@ -78,7 +78,7 @@ export const VehicleDetails = ({ data, onUpdate }: Props) => {
         <Car className="h-5 w-5 text-primary" />
         <h2 className="pdi-section-title">Vehicle Details</h2>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 print-grid-2">
         {field('Make', 'make', { required: true })}
         {field('Model', 'model', { required: true })}
         {field('Variant', 'variant')}
