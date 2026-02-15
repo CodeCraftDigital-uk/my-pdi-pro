@@ -362,7 +362,7 @@
   }
 
   .tc-print-compact h3 {
-    font-size: 5pt !important;
+    font-size: 6pt !important;
     font-weight: 700 !important;
     margin-bottom: 0 !important;
     margin-top: 1pt !important;
@@ -370,7 +370,7 @@
   }
 
   .tc-print-compact p {
-    font-size: 4.5pt !important;
+    font-size: 5.5pt !important;
     line-height: 1.2 !important;
     margin-bottom: 0 !important;
   }
