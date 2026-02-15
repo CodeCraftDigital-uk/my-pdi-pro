@@ -210,6 +210,26 @@
   h2 { font-size: 10pt !important; margin-bottom: 2pt !important; }
   h3 { font-size: 9pt !important; margin-bottom: 1pt !important; }
 
+  /* Compact header in print so it doesn't push content to page 2 */
+  .pdi-container > .border-b:first-child {
+    padding-bottom: 2pt !important;
+    margin-bottom: 3pt !important;
+  }
+
+  .pdi-container > .border-b:first-child p {
+    font-size: 7pt !important;
+    line-height: 1.2 !important;
+    margin-bottom: 0 !important;
+  }
+
+  .pdi-container > .border-b:first-child .text-sm {
+    display: none !important;
+  }
+
+  .pdi-container > .border-b:first-child .flex-wrap {
+    margin-top: 1pt !important;
+  }
+
   .pdi-section-header {
     margin-bottom: 3pt !important;
   }
