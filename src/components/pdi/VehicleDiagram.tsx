@@ -206,17 +206,6 @@ export const VehicleDiagram = ({ damages, damageNotes, onAddDamage, onRemoveDama
         </div>
       )}
 
-      {/* Notes */}
-      <div className="mt-4 space-y-1.5">
-        <label className="text-sm font-medium">Damage Notes</label>
-        <Textarea
-          placeholder="Additional notes about cosmetic condition..."
-          value={damageNotes}
-          onChange={(e) => onNotesChange(e.target.value)}
-          className="bg-card"
-          rows={3}
-        />
-      </div>
     </section>
   );
 };
