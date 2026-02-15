@@ -156,7 +156,7 @@
 @media print {
   @page {
     size: A4 portrait;
-    margin: 8mm 10mm;
+    margin: 6mm 8mm;
   }
 
   * {
@@ -164,7 +164,8 @@
   }
 
   body {
-    font-size: 9pt !important;
+    font-size: 8pt !important;
+    line-height: 1.3 !important;
     color: #000 !important;
     background: #fff !important;
     -webkit-print-color-adjust: exact;
@@ -184,8 +185,8 @@
   .pdi-section {
     page-break-inside: avoid;
     border-bottom: 1px solid #ddd;
-    margin-bottom: 8pt;
-    padding-bottom: 8pt;
+    margin-bottom: 4pt;
+    padding-bottom: 4pt;
   }
 
   .pdi-container {
@@ -195,22 +196,22 @@
     width: 100% !important;
   }
 
-  h1 { font-size: 14pt !important; }
-  h2 { font-size: 11pt !important; }
-  h3 { font-size: 10pt !important; }
+  h1 { font-size: 12pt !important; margin-bottom: 2pt !important; }
+  h2 { font-size: 10pt !important; margin-bottom: 2pt !important; }
+  h3 { font-size: 9pt !important; margin-bottom: 1pt !important; }
 
   .pdi-section-header {
-    margin-bottom: 4pt !important;
+    margin-bottom: 3pt !important;
   }
 
   .pdi-section-number {
-    width: 20px !important;
-    height: 20px !important;
-    font-size: 8pt !important;
+    width: 16px !important;
+    height: 16px !important;
+    font-size: 7pt !important;
   }
 
   .pdi-section-title {
-    font-size: 11pt !important;
+    font-size: 9pt !important;
   }
 
   input, select, textarea {
@@ -218,53 +219,89 @@
     background: none !important;
     padding: 0 !important;
     box-shadow: none !important;
-    font-size: 9pt !important;
+    font-size: 8pt !important;
     min-height: 0 !important;
     height: auto !important;
+    line-height: 1.2 !important;
   }
 
-  /* Ensure grid layouts don't overflow */
+  /* Grids */
   .grid {
-    gap: 4px !important;
+    gap: 2px !important;
   }
 
   /* Tables */
   table {
-    font-size: 8pt !important;
+    font-size: 7pt !important;
     width: 100% !important;
   }
 
   th, td {
-    padding: 2pt 4pt !important;
+    padding: 1pt 3pt !important;
   }
 
-  /* Cards */
+  /* Cards & containers */
   .rounded-lg, .rounded-xl {
-    border-radius: 4px !important;
+    border-radius: 2px !important;
   }
 
   [class*="p-6"], [class*="p-8"] {
-    padding: 8pt !important;
+    padding: 4pt !important;
+  }
+
+  [class*="p-4"] {
+    padding: 3pt !important;
+  }
+
+  [class*="p-3"] {
+    padding: 2pt !important;
   }
 
   [class*="mb-6"], [class*="mb-8"] {
-    margin-bottom: 6pt !important;
+    margin-bottom: 3pt !important;
+  }
+
+  [class*="mb-4"] {
+    margin-bottom: 2pt !important;
   }
 
   [class*="gap-6"], [class*="gap-8"] {
-    gap: 4pt !important;
+    gap: 3pt !important;
   }
 
-  /* SVG diagrams */
+  [class*="gap-4"] {
+    gap: 2pt !important;
+  }
+
+  [class*="space-y-6"] > * + * {
+    margin-top: 3pt !important;
+  }
+
+  [class*="space-y-4"] > * + * {
+    margin-top: 2pt !important;
+  }
+
+  [class*="py-8"], [class*="py-6"] {
+    padding-top: 3pt !important;
+    padding-bottom: 3pt !important;
+  }
+
+  /* SVG diagrams - constrain size for print */
   svg {
     max-width: 100% !important;
     height: auto !important;
     page-break-inside: avoid;
   }
 
+  /* Make the plan view diagram smaller in print */
+  .pdi-section svg {
+    max-height: 280px !important;
+  }
+
   .panel-cell {
     border: 1px solid #ccc !important;
     background: #f9f9f9 !important;
+    padding: 2pt !important;
   }
 
   .panel-cell.has-damage {
@@ -278,25 +315,38 @@
 
   .signature-canvas {
     border: 1px solid #ccc !important;
+    height: 60px !important;
   }
 
   /* Checkboxes print visible */
   [role="checkbox"] {
     border: 1px solid #333 !important;
-    width: 12px !important;
-    height: 12px !important;
+    width: 10px !important;
+    height: 10px !important;
   }
 
   /* Badges and labels */
   .badge, [class*="badge"] {
+    font-size: 6pt !important;
+    padding: 0px 3px !important;
+  }
+
+  /* Labels */
+  label {
     font-size: 7pt !important;
-    padding: 1px 4px !important;
+    margin-bottom: 0 !important;
   }
 
   /* Prevent orphan text */
   p, li, label {
     orphans: 2;
     widows: 2;
+  }
+
+  /* Reduce textarea height in print */
+  textarea {
+    max-height: 30px !important;
+    overflow: hidden !important;
   }
 
   .print-footer {
@@ -306,10 +356,10 @@
     left: 0;
     right: 0;
     text-align: center;
-    font-size: 7pt;
+    font-size: 6pt;
     color: #666;
     border-top: 1px solid #ddd;
-    padding-top: 3pt;
+    padding-top: 2pt;
   }
 }
 
