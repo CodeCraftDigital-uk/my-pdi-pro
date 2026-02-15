@@ -365,7 +365,15 @@
 
   .signature-canvas {
     border: 1px solid #ccc !important;
-    height: 60px !important;
+    height: 35px !important;
+  }
+
+  /* Signature images in print */
+  .signature-canvas + img,
+  img[alt*="Signature"] {
+    height: 35px !important;
+    max-height: 35px !important;
+    object-fit: contain !important;
   }
 
   /* Checkboxes print visible */
