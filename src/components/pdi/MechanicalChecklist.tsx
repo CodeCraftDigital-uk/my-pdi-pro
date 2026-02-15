@@ -19,7 +19,7 @@ export const MechanicalChecklist = ({ checks, onToggle, notes, onNotesChange }: 
         <h2 className="pdi-section-title">Mechanical Checklist</h2>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 print-grid-2col">
         {MECHANICAL_CHECKS.map(check => (
           <label
             key={check}

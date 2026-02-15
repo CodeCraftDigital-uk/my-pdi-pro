@@ -161,7 +161,7 @@ export const VehicleDiagram = ({ damages, damageNotes, onAddDamage, onRemoveDama
       {/* Wheel positions with inline dropdown */}
       <div className="mt-6">
         <p className="text-sm font-medium mb-2">Wheel Condition</p>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 print-grid-4col">
           {WHEEL_POSITIONS.map(pos => {
             const wheelDamages = getPanelDamages(`Wheel ${pos}`, 'wheels');
             return (

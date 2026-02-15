@@ -45,7 +45,7 @@ export const CustomerHandover = ({ data, onUpdate }: Props) => {
       </div>
 
       {/* Keys, V5C, Service History */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-6 print-grid-5col">
         <div className="space-y-1.5">
           <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
             Number of Keys
@@ -115,7 +115,7 @@ export const CustomerHandover = ({ data, onUpdate }: Props) => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 print-grid-2col">
         <div className="space-y-4">
           <div className="space-y-1.5">
             <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Customer Name</Label>
