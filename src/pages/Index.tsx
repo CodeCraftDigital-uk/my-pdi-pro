@@ -69,47 +69,56 @@ const Index = () => {
           reportDate={form.reportDate}
         />
 
-        <VehicleDetails
-          data={form.vehicleDetails}
-          onUpdate={form.updateVehicle}
-        />
+        {/* Print group: Vehicle Details + Cosmetic Condition on same page */}
+        <div className="print-page-group">
+          <VehicleDetails
+            data={form.vehicleDetails}
+            onUpdate={form.updateVehicle}
+          />
 
-        <VehicleDiagram
-          damages={form.damages}
-          damageNotes={form.damageNotes}
-          onAddDamage={form.addDamage}
-          onRemoveDamage={form.removeDamage}
-          onNotesChange={form.setDamageNotes}
-        />
+          <VehicleDiagram
+            damages={form.damages}
+            damageNotes={form.damageNotes}
+            onAddDamage={form.addDamage}
+            onRemoveDamage={form.removeDamage}
+            onNotesChange={form.setDamageNotes}
+          />
+        </div>
 
-        <TyreSection
-          measurements={form.tyreMeasurements}
-          onUpdate={form.updateTyre}
-        />
+        {/* Print group: Tyres + Brakes + Mechanical on same page */}
+        <div className="print-page-group">
+          <TyreSection
+            measurements={form.tyreMeasurements}
+            onUpdate={form.updateTyre}
+          />
 
-        <BrakeSection
-          measurements={form.brakeMeasurements}
-          onUpdate={form.updateBrake}
-        />
+          <BrakeSection
+            measurements={form.brakeMeasurements}
+            onUpdate={form.updateBrake}
+          />
 
-        <MechanicalChecklist
-          checks={form.mechanicalChecks}
-          onToggle={form.toggleMechanical}
-          notes={form.mechanicalNotes}
-          onNotesChange={form.setMechanicalNotes}
-        />
+          <MechanicalChecklist
+            checks={form.mechanicalChecks}
+            onToggle={form.toggleMechanical}
+            notes={form.mechanicalNotes}
+            onNotesChange={form.setMechanicalNotes}
+          />
+        </div>
 
-        <CRACompliance
-          checks={form.craChecks}
-          onToggle={form.toggleCRA}
-          confirmed={form.craConfirmed}
-          onConfirmChange={form.setCraConfirmed}
-        />
+        {/* Print group: CRA + Handover + Signatures on same page */}
+        <div className="print-page-group">
+          <CRACompliance
+            checks={form.craChecks}
+            onToggle={form.toggleCRA}
+            confirmed={form.craConfirmed}
+            onConfirmChange={form.setCraConfirmed}
+          />
 
-        <CustomerHandover
-          data={form.handover}
-          onUpdate={form.updateHandover}
-        />
+          <CustomerHandover
+            data={form.handover}
+            onUpdate={form.updateHandover}
+          />
+        </div>
 
         <TermsAndConditions
           accepted={form.tcAccepted}
