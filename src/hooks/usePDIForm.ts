@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { VehicleDetailsData, Damage, TyreMeasurement, BrakeMeasurement, HandoverData } from '@/types/pdi';
+import { VehicleDetailsData, Damage, TyreMeasurement, HandoverData } from '@/types/pdi';
 
 const generateReportId = () => {
   const d = new Date();
@@ -31,12 +31,6 @@ export const usePDIForm = () => {
     { position: 'Spare (if fitted)', treadDepth: '' },
   ]);
 
-  const [brakeMeasurements, setBrakeMeasurements] = useState<BrakeMeasurement[]>([
-    { component: 'Front Discs', measured: '', minimum: '' },
-    { component: 'Rear Discs', measured: '', minimum: '' },
-    { component: 'Front Pads', measured: '', minimum: '' },
-    { component: 'Rear Pads', measured: '', minimum: '' },
-  ]);
 
   const [mechanicalChecks, setMechanicalChecks] = useState<Record<string, boolean>>({});
   const [mechanicalNotes, setMechanicalNotes] = useState('');
@@ -68,9 +62,6 @@ export const usePDIForm = () => {
     setTyreMeasurements(prev => prev.map((t, i) => i === index ? { ...t, treadDepth } : t));
   }, []);
 
-  const updateBrake = useCallback((index: number, field: 'measured' | 'minimum', value: string) => {
-    setBrakeMeasurements(prev => prev.map((b, i) => i === index ? { ...b, [field]: value } : b));
-  }, []);
 
   const toggleMechanical = useCallback((check: string) => {
     setMechanicalChecks(prev => ({ ...prev, [check]: !prev[check] }));
@@ -106,7 +97,7 @@ export const usePDIForm = () => {
     vehicleDetails, updateVehicle,
     damages, addDamage, removeDamage, damageNotes, setDamageNotes,
     tyreMeasurements, updateTyre,
-    brakeMeasurements, updateBrake,
+    
     mechanicalChecks, toggleMechanical, mechanicalNotes, setMechanicalNotes,
     craChecks, toggleCRA, craConfirmed, setCraConfirmed,
     tcAccepted, setTcAccepted,

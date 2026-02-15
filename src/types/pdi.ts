@@ -77,6 +77,7 @@ export const MECHANICAL_CHECKS = [
   'Gearbox smooth',
   'Steering aligned',
   'Suspension quiet',
+  'Brakes operating correctly',
   'No dashboard warning lights',
   'Road test completed',
 ];
