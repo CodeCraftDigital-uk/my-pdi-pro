@@ -183,6 +183,21 @@ export const TermsAndConditions = ({ accepted, onAcceptChange, customerName }: P
           <span>{accepted ? '☑' : '☐'} Customer accepted Terms &amp; Conditions</span>
         </div>
       </div>
+
+      {/* Signature section */}
+      <div className="px-5 py-4 border-t border-border">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div className="space-y-2">
+            <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Customer Signature</Label>
+            <div className="border-b border-foreground h-10" />
+            <Label className="text-xs text-muted-foreground">Name: {customerName || '_______________'}</Label>
+          </div>
+          <div className="space-y-2">
+            <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Date</Label>
+            <div className="border-b border-foreground h-10" />
+          </div>
+        </div>
+      </div>
     </section>
   );
 };
