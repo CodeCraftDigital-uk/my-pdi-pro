@@ -4,7 +4,7 @@ import { HeaderSection } from '@/components/pdi/HeaderSection';
 import { VehicleDetails } from '@/components/pdi/VehicleDetails';
 import { VehicleDiagram } from '@/components/pdi/VehicleDiagram';
 import { TyreSection } from '@/components/pdi/TyreSection';
-import { BrakeSection } from '@/components/pdi/BrakeSection';
+
 import { MechanicalChecklist } from '@/components/pdi/MechanicalChecklist';
 import { CRACompliance } from '@/components/pdi/CRACompliance';
 import { CustomerHandover } from '@/components/pdi/CustomerHandover';
@@ -92,10 +92,6 @@ const Index = () => {
             onUpdate={form.updateTyre}
           />
 
-          <BrakeSection
-            measurements={form.brakeMeasurements}
-            onUpdate={form.updateBrake}
-          />
 
           <MechanicalChecklist
             checks={form.mechanicalChecks}
