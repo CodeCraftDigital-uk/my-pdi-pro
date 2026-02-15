@@ -1,6 +1,7 @@
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { SignaturePad } from './SignaturePad';
 import { HandoverData } from '@/types/pdi';
 import { ClipboardCheck } from 'lucide-react';
@@ -16,6 +17,8 @@ const CONFIRMATIONS: { key: keyof HandoverData; label: string }[] = [
   { key: 'mileageConfirmed', label: 'Mileage at handover confirmed and correct' },
   { key: 'documentationReceived', label: 'All documentation received and checked' },
 ];
+
+const SERVICE_HISTORY_TYPES = ['Full Service History', 'Part Service History', 'No Service History', 'First Service Not Due'];
 
 export const CustomerHandover = ({ data, onUpdate }: Props) => {
   return (
@@ -41,18 +44,63 @@ export const CustomerHandover = ({ data, onUpdate }: Props) => {
         ))}
       </div>
 
-      <div className="mb-6 max-w-xs space-y-1.5">
-        <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-          Number of Keys Received
-        </Label>
-        <Input
-          type="text"
-          inputMode="numeric"
-          placeholder="e.g. 2"
-          value={data.keysReceived}
-          onChange={(e) => onUpdate('keysReceived', e.target.value.replace(/[^0-9]/g, ''))}
-          className="w-24 bg-card"
-        />
+      {/* Keys, V5C, Service History */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <div className="space-y-1.5">
+          <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+            Number of Keys
+          </Label>
+          <Input
+            type="text"
+            inputMode="numeric"
+            placeholder="e.g. 2"
+            value={data.keysReceived}
+            onChange={(e) => onUpdate('keysReceived', e.target.value.replace(/[^0-9]/g, ''))}
+            className="bg-card"
+          />
+        </div>
+
+        <div className="space-y-1.5">
+          <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+            V5C Present
+          </Label>
+          <label className="flex items-center gap-3 p-2.5 rounded-lg border border-border hover:bg-secondary/50 transition-colors cursor-pointer">
+            <Checkbox
+              checked={data.v5cPresent}
+              onCheckedChange={(v) => onUpdate('v5cPresent', !!v)}
+            />
+            <span className="text-sm">V5C / Logbook provided</span>
+          </label>
+        </div>
+
+        <div className="space-y-1.5">
+          <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+            Service History
+          </Label>
+          <label className="flex items-center gap-3 p-2.5 rounded-lg border border-border hover:bg-secondary/50 transition-colors cursor-pointer">
+            <Checkbox
+              checked={data.serviceHistoryPresent}
+              onCheckedChange={(v) => onUpdate('serviceHistoryPresent', !!v)}
+            />
+            <span className="text-sm">Service records provided</span>
+          </label>
+        </div>
+
+        <div className="space-y-1.5">
+          <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+            Service History Type
+          </Label>
+          <Select value={data.serviceHistoryType} onValueChange={(v) => onUpdate('serviceHistoryType', v)}>
+            <SelectTrigger className="bg-card">
+              <SelectValue placeholder="Select type" />
+            </SelectTrigger>
+            <SelectContent>
+              {SERVICE_HISTORY_TYPES.map(t => (
+                <SelectItem key={t} value={t}>{t}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

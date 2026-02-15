@@ -45,7 +45,8 @@ export const usePDIForm = () => {
 
   const [handover, setHandover] = useState<HandoverData>({
     vehicleInspected: false, cosmeticAccepted: false, mileageConfirmed: false,
-    keysReceived: '', documentationReceived: false,
+    keysReceived: '', v5cPresent: false, serviceHistoryPresent: false,
+    serviceHistoryType: '', documentationReceived: false,
     customerName: '', salesRepName: '',
     customerSignature: '', salesRepSignature: '',
   });

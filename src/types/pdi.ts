@@ -40,6 +40,9 @@ export interface HandoverData {
   cosmeticAccepted: boolean;
   mileageConfirmed: boolean;
   keysReceived: string;
+  v5cPresent: boolean;
+  serviceHistoryPresent: boolean;
+  serviceHistoryType: string;
   documentationReceived: boolean;
   customerName: string;
   salesRepName: string;
