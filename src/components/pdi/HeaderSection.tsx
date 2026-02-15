@@ -1,5 +1,6 @@
 import { format } from 'date-fns';
-import { Upload, FileText } from 'lucide-react';
+import { Upload } from 'lucide-react';
+import siteIcon from '@/assets/autoprov_icon.png';
 
 interface Props {
   reportId: string;
@@ -23,7 +24,7 @@ export const HeaderSection = ({ reportId, reportDate, logo, onLogoChange }: Prop
       <div className="flex items-start justify-between gap-4">
         <div className="flex-1">
           <div className="flex items-center gap-3 mb-2">
-            <FileText className="h-7 w-7 text-primary" />
+            <img src={siteIcon} alt="PDI Pro" className="h-8 w-8 object-contain" />
             <h1 className="text-2xl font-bold text-foreground tracking-tight">
               Used Vehicle PDI
             </h1>
