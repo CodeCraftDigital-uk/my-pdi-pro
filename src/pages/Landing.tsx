@@ -9,6 +9,7 @@ import {
   Users,
   CheckCircle2,
   FileSignature,
+  Scale,
 } from 'lucide-react';
 import autoprovIcon from '@/assets/autoprov_icon.png';
 
@@ -43,6 +44,17 @@ const tools: ToolCard[] = [
     description: 'Generate a legally structured, exportable PDF compliance pack for distance vehicle sales. CRA 2015 & Consumer Contracts Regulations compliant.',
     status: 'active',
     path: '/distance-sale',
+    accentClass: 'border-l-[#2d6aad]',
+    iconBgClass: 'bg-[#e8f0f9]',
+    iconColorClass: 'text-[#1e3a5f]',
+  },
+  {
+    id: 'dispute-response',
+    icon: <Scale size={28} />,
+    title: 'Dispute Response Builder',
+    description: 'AI-powered complaint defence tool. Generate legally compliant, professionally worded responses to customer disputes. CRA 2015 aligned.',
+    status: 'active',
+    path: '/dispute-response',
     accentClass: 'border-l-[#2d6aad]',
     iconBgClass: 'bg-[#e8f0f9]',
     iconColorClass: 'text-[#1e3a5f]',
