@@ -85,8 +85,12 @@ const trustItems = [
 
 const faqs = [
   {
-    q: 'What is AutoProv and who is it for?',
-    a: 'AutoProv is a professional automotive compliance platform built specifically for UK used car dealers and motor trade professionals. It provides three free digital tools — a Used Vehicle PDI Report, a Digital Distance Sale Pack generator, and an AI-powered Dispute Response Builder — to help dealers meet their legal obligations under the Consumer Rights Act 2015 (CRA 2015) and the Consumer Contracts Regulations 2013 (CCR 2013).',
+    q: 'What are the AutoProv Compliance Tools?',
+    a: 'The AutoProv Compliance Tools are a suite of free, standalone digital tools built for UK used car dealers and motor trade professionals. They cover three core compliance areas: Pre-Delivery Inspection (PDI) reporting, Distance Sale Pack generation, and AI-powered Dispute Response drafting. These tools are part of the wider AutoProv platform — a broad automotive management and operations platform currently in development — and will be fully integrated into AutoProv when it launches.',
+  },
+  {
+    q: 'What is AutoProv?',
+    a: 'AutoProv is a broader automotive platform in development, designed to cover far more than compliance alone. The Compliance Tools available here represent just one module of what AutoProv will offer. The compliance suite has been released early as a free, standalone resource for UK motor traders, ahead of the full AutoProv platform launch.',
   },
   {
     q: 'What is a PDI report and why do used car dealers need one?',
@@ -94,7 +98,7 @@ const faqs = [
   },
   {
     q: 'Do UK car dealers need a Distance Sale Pack?',
-    a: 'Yes. If a UK car dealer sells a vehicle remotely — online, by phone, or without the buyer visiting the premises in person — the sale is classified as a distance sale under the Consumer Contracts (Information, Cancellation and Additional Charges) Regulations 2013. The dealer must provide mandatory pre-contract information and notify the buyer of their 14-day cooling-off right to cancel. Failure to comply is a criminal offence and extends the cancellation period to 12 months. AutoProv\'s Distance Sale Pack generator creates a fully compliant document in minutes.',
+    a: 'Yes. If a UK car dealer sells a vehicle remotely — online, by phone, or without the buyer visiting the premises in person — the sale is classified as a distance sale under the Consumer Contracts (Information, Cancellation and Additional Charges) Regulations 2013. The dealer must provide mandatory pre-contract information and notify the buyer of their 14-day cooling-off right to cancel. Failure to comply is a criminal offence and extends the cancellation period to 12 months. The AutoProv Compliance Tools Distance Sale Pack generator creates a fully compliant document in minutes.',
   },
   {
     q: 'How does the AI Dispute Response Builder work?',
@@ -105,8 +109,8 @@ const faqs = [
     a: 'The primary legislation is the Consumer Rights Act 2015 (CRA 2015), which requires goods — including used cars — to be of satisfactory quality, fit for purpose, and as described. Buyers have a 30-day short-term right to reject faulty vehicles. Within the first 6 months of purchase, faults are presumed to have existed at the point of sale unless the dealer can prove otherwise. For remote or online sales, the Consumer Contracts Regulations 2013 (CCR 2013) additionally grant consumers a 14-day right to cancel.',
   },
   {
-    q: 'Is AutoProv free to use?',
-    a: 'Yes. AutoProv\'s three compliance tools — the PDI Report, Distance Sale Pack generator, and AI Dispute Response Builder — are all free to use for UK used car dealers and motor trade professionals. No account registration is required.',
+    q: 'Are the AutoProv Compliance Tools free to use?',
+    a: 'Yes. The three AutoProv Compliance Tools — the PDI Report, Distance Sale Pack generator, and AI Dispute Response Builder — are all free to use for UK used car dealers and motor trade professionals. No account registration is required. These tools are provided as a standalone compliance resource ahead of the full AutoProv platform launch.',
   },
 ];
 
@@ -179,13 +183,13 @@ const Landing = () => {
               AutoProv
             </h1>
             <p className="text-base sm:text-lg font-medium tracking-widest uppercase" style={{ color: '#c9a227' }}>
-              Professional Automotive Compliance Platform
+              Compliance Tools
             </p>
           </div>
 
           {/* Tagline */}
           <p className="max-w-xl text-slate-300 text-sm sm:text-base leading-relaxed">
-            Streamlined compliance tools designed for automotive professionals.
+            Free automotive compliance tools for UK used car dealers — part of the wider AutoProv platform, releasing ahead of the full launch.
             Select a tool below to get started.
           </p>
 
@@ -195,7 +199,7 @@ const Landing = () => {
             style={{ background: 'rgba(201,162,39,0.18)', color: '#f0c93a', border: '1px solid rgba(201,162,39,0.35)' }}
           >
             <CheckCircle2 size={12} />
-            Platform v1.0
+            Compliance Module — Early Access
           </span>
         </div>
       </header>
@@ -309,19 +313,22 @@ const Landing = () => {
 
           {/* ── Platform Overview ── */}
           <div className="text-center max-w-3xl mx-auto">
-            <p className="text-xs font-bold tracking-[0.2em] uppercase text-slate-400 mb-3">About This Platform</p>
+            <p className="text-xs font-bold tracking-[0.2em] uppercase text-slate-400 mb-3">About These Tools</p>
             <h2 className="text-3xl font-extrabold text-slate-900 mb-4 leading-tight">
-              Free Compliance Tools for UK Used Car Dealers
+              AutoProv Compliance Tools for UK Used Car Dealers
             </h2>
-            <p className="text-slate-600 text-base leading-relaxed">
-              AutoProv provides professional automotive compliance software designed specifically for independent used car dealers and motor trade businesses in the United Kingdom. Our digital tools remove the paperwork burden and help dealers meet their legal obligations under the <strong>Consumer Rights Act 2015 (CRA 2015)</strong> and the <strong>Consumer Contracts Regulations 2013 (CCR 2013)</strong> — with no account required.
+            <p className="text-slate-600 text-base leading-relaxed mb-4">
+              These are the <strong>AutoProv Compliance Tools</strong> — a suite of free digital compliance resources built specifically for UK used car dealers and motor trade professionals. They help dealers meet their legal obligations under the <strong>Consumer Rights Act 2015 (CRA 2015)</strong> and the <strong>Consumer Contracts Regulations 2013 (CCR 2013)</strong>, with no account required.
+            </p>
+            <p className="text-slate-500 text-sm leading-relaxed border border-slate-200 rounded-xl px-5 py-4 bg-slate-50">
+              <strong className="text-slate-700">Note:</strong> These compliance tools are part of <strong>AutoProv</strong> — a broader automotive platform covering far more than compliance. The tools on this site are being made available as a free, standalone resource ahead of the full AutoProv platform launch.
             </p>
           </div>
 
           {/* ── Tool Descriptions ── */}
           <div>
             <h3 className="text-xl font-bold text-slate-800 mb-6 text-center">
-              Three Tools. Full Compliance Coverage.
+              Three Compliance Tools. Free to Use.
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 
@@ -359,8 +366,8 @@ const Landing = () => {
 
           {/* ── Legal Frameworks ── */}
           <div>
-            <h3 className="text-xl font-bold text-slate-800 mb-2 text-center">UK Consumer Law AutoProv Covers</h3>
-            <p className="text-sm text-slate-500 text-center mb-8">The legal frameworks every UK used car dealer must understand</p>
+            <h3 className="text-xl font-bold text-slate-800 mb-2 text-center">UK Consumer Law These Tools Cover</h3>
+            <p className="text-sm text-slate-500 text-center mb-8">The legal frameworks every UK used car dealer must understand — addressed directly by the AutoProv Compliance Tools</p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {legalFrameworks.map((law) => (
                 <div key={law.title} className="flex gap-4 p-5 rounded-xl border border-slate-200 bg-slate-50">
@@ -416,9 +423,9 @@ const Landing = () => {
 
           {/* ── Who It's For ── */}
           <div className="rounded-2xl border border-slate-200 p-8" style={{ background: 'linear-gradient(135deg, #1a3558 0%, #1e3f6b 100%)' }}>
-            <h3 className="text-xl font-bold text-white mb-4 text-center">Who AutoProv Is For</h3>
+            <h3 className="text-xl font-bold text-white mb-4 text-center">Who These Tools Are For</h3>
             <p className="text-slate-300 text-sm text-center mb-8 max-w-xl mx-auto">
-              AutoProv is built for UK motor trade professionals who need reliable compliance tools without the cost of specialist legal advice.
+              The AutoProv Compliance Tools are built for UK motor trade professionals who need reliable, legally-grounded compliance resources without the cost of specialist legal advice.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 max-w-3xl mx-auto">
               {[
@@ -448,11 +455,11 @@ const Landing = () => {
         <div className="max-w-5xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs">
           <div className="flex items-center gap-2 text-slate-400">
             <img src={autoprovIcon} alt="" className="w-5 h-5 opacity-70 object-contain" />
-            <span className="font-semibold text-slate-300">AutoProv Platform</span>
+            <span className="font-semibold text-slate-300">AutoProv Compliance Tools</span>
             <span className="text-slate-600">·</span>
-            <span>Professional Automotive Compliance</span>
+            <span>Part of the AutoProv Platform</span>
           </div>
-          <span className="text-slate-500">Consumer Rights Act 2015 Compliant &mdash; © {new Date().getFullYear()} AutoProv</span>
+          <span className="text-slate-500">CRA 2015 Compliant &mdash; © {new Date().getFullYear()} AutoProv</span>
         </div>
       </footer>
 
