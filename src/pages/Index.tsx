@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { usePDIForm } from '@/hooks/usePDIForm';
 import { HeaderSection } from '@/components/pdi/HeaderSection';
 import { VehicleDetails } from '@/components/pdi/VehicleDetails';
@@ -11,7 +12,7 @@ import { CustomerHandover } from '@/components/pdi/CustomerHandover';
 import { TermsAndConditions } from '@/components/pdi/TermsAndConditions';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { Printer, Download, AlertCircle, CheckCircle2, ChevronUp } from 'lucide-react';
+import { Printer, Download, AlertCircle, CheckCircle2, ChevronUp, ChevronLeft } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -34,6 +35,7 @@ const SECTION_IDS = {
 };
 
 const Index = () => {
+  const navigate = useNavigate();
   const form = usePDIForm();
   const [errors, setErrors] = useState<string[]>([]);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -146,6 +148,14 @@ const Index = () => {
       {/* Sticky progress bar */}
       <div className="sticky top-0 z-40 no-print bg-background/95 backdrop-blur border-b border-border shadow-sm">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex items-center gap-4">
+          {/* Back to Portal */}
+          <button
+            onClick={() => navigate('/')}
+            className="flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors shrink-0 mr-2"
+          >
+            <ChevronLeft className="h-3.5 w-3.5" />
+            Portal
+          </button>
           <div className="flex-1">
             <div className="flex items-center justify-between mb-1">
               <span className="text-xs font-medium text-muted-foreground">Form completion</span>
