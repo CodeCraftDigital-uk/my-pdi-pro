@@ -1,6 +1,6 @@
 import { Input } from '@/components/ui/input';
 import { BrakeMeasurement } from '@/types/pdi';
-import { Disc, AlertTriangle } from 'lucide-react';
+import { Disc, AlertTriangle, CheckCircle2 } from 'lucide-react';
 
 interface Props {
   measurements: BrakeMeasurement[];
@@ -17,30 +17,30 @@ export const BrakeSection = ({ measurements, onUpdate }: Props) => {
   };
 
   return (
-    <section className="pdi-section">
+    <section className="pdi-section pdi-section-card pdi-accent-orange">
       <div className="pdi-section-header">
-        <span className="pdi-section-number">5</span>
-        <Disc className="h-5 w-5 text-primary" />
+        <span className="pdi-section-number pdi-num-orange">5</span>
+        <Disc className="h-5 w-5 text-orange-600" />
         <h2 className="pdi-section-title">Brake Measurements</h2>
       </div>
 
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto rounded-lg border border-border">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-border">
-              <th className="text-left py-2 px-3 text-xs font-semibold text-muted-foreground uppercase">Component</th>
-              <th className="text-left py-2 px-3 text-xs font-semibold text-muted-foreground uppercase">Measured (mm)</th>
-              <th className="text-left py-2 px-3 text-xs font-semibold text-muted-foreground uppercase">Manufacturer Min (mm)</th>
-              <th className="text-left py-2 px-3 text-xs font-semibold text-muted-foreground uppercase">Status</th>
+            <tr className="border-b border-border bg-muted/40">
+              <th className="text-left py-2.5 px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wide">Component</th>
+              <th className="text-left py-2.5 px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wide">Measured (mm)</th>
+              <th className="text-left py-2.5 px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wide">Manufacturer Min (mm)</th>
+              <th className="text-left py-2.5 px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wide">Status</th>
             </tr>
           </thead>
           <tbody>
             {measurements.map((m, i) => {
               const status = getStatus(m.measured, m.minimum);
               return (
-                <tr key={m.component} className="border-b border-border/50">
-                  <td className="py-2 px-3 font-medium">{m.component}</td>
-                  <td className="py-2 px-3">
+                <tr key={m.component} className="border-b border-border/50 even:bg-muted/20 last:border-b-0">
+                  <td className="py-2.5 px-3 font-medium">{m.component}</td>
+                  <td className="py-2.5 px-3">
                     <Input
                       type="text"
                       inputMode="decimal"
@@ -50,7 +50,7 @@ export const BrakeSection = ({ measurements, onUpdate }: Props) => {
                       className="w-24 bg-card"
                     />
                   </td>
-                  <td className="py-2 px-3">
+                  <td className="py-2.5 px-3">
                     <Input
                       type="text"
                       inputMode="decimal"
@@ -60,14 +60,18 @@ export const BrakeSection = ({ measurements, onUpdate }: Props) => {
                       className="w-24 bg-card"
                     />
                   </td>
-                  <td className="py-2 px-3">
-                    {status === 'pass' && <span className="status-pass">✓ Pass</span>}
-                    {status === 'fail' && (
-                      <span className="status-fail flex items-center gap-1">
-                        <AlertTriangle className="h-3.5 w-3.5" /> Below Minimum
+                  <td className="py-2.5 px-3">
+                    {status === 'pass' && (
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-success/10 text-success border border-success/20">
+                        <CheckCircle2 className="h-3 w-3" /> Pass
                       </span>
                     )}
-                    {!status && <span className="text-muted-foreground">—</span>}
+                    {status === 'fail' && (
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-destructive/10 text-destructive border border-destructive/20">
+                        <AlertTriangle className="h-3 w-3" /> Below Minimum
+                      </span>
+                    )}
+                    {!status && <span className="text-muted-foreground text-xs">—</span>}
                   </td>
                 </tr>
               );

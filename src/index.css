@@ -101,12 +101,36 @@
   @apply mb-8 pb-8 border-b border-border last:border-b-0;
 }
 
-.pdi-section-header {
-  @apply flex items-center gap-3 mb-6;
+/* Section card elevation */
+.pdi-section-card {
+  @apply bg-card rounded-xl shadow-sm border border-border p-6 mb-6 border-l-4;
+  border-bottom: 1px solid hsl(var(--border));
 }
 
+/* Colour-coded left accent borders */
+.pdi-accent-blue   { border-left-color: #3b82f6 !important; }
+.pdi-accent-amber  { border-left-color: #f59e0b !important; }
+.pdi-accent-green  { border-left-color: #22c55e !important; }
+.pdi-accent-orange { border-left-color: #f97316 !important; }
+.pdi-accent-indigo { border-left-color: #6366f1 !important; }
+.pdi-accent-teal   { border-left-color: #14b8a6 !important; }
+.pdi-accent-purple { border-left-color: #a855f7 !important; }
+
+/* Colour-coded section number badges */
 .pdi-section-number {
-  @apply flex items-center justify-center w-8 h-8 rounded-full bg-primary text-primary-foreground text-sm font-bold shrink-0;
+  @apply flex items-center justify-center w-8 h-8 rounded-full text-white text-sm font-bold shrink-0;
+  background-color: hsl(var(--primary));
+}
+.pdi-num-blue   { background-color: #3b82f6 !important; }
+.pdi-num-amber  { background-color: #f59e0b !important; }
+.pdi-num-green  { background-color: #22c55e !important; }
+.pdi-num-orange { background-color: #f97316 !important; }
+.pdi-num-indigo { background-color: #6366f1 !important; }
+.pdi-num-teal   { background-color: #14b8a6 !important; }
+.pdi-num-purple { background-color: #a855f7 !important; }
+
+.pdi-section-header {
+  @apply flex items-center gap-3 mb-6;
 }
 
 .pdi-section-title {
@@ -134,15 +158,24 @@
 
 /* Pass/Fail indicators */
 .status-pass {
-  @apply text-success font-semibold;
+  @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold;
+  background-color: hsl(var(--success) / 0.1);
+  color: hsl(var(--success));
+  border: 1px solid hsl(var(--success) / 0.2);
 }
 
 .status-fail {
-  @apply text-destructive font-semibold;
+  @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold;
+  background-color: hsl(var(--destructive) / 0.1);
+  color: hsl(var(--destructive));
+  border: 1px solid hsl(var(--destructive) / 0.2);
 }
 
 .status-warn {
-  @apply text-warning font-semibold;
+  @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold;
+  background-color: hsl(var(--warning) / 0.1);
+  color: hsl(var(--warning));
+  border: 1px solid hsl(var(--warning) / 0.3);
 }
 
 /* Signature pad */
@@ -151,6 +184,7 @@
   background: linear-gradient(to bottom, transparent calc(100% - 1px), hsl(var(--border)) calc(100% - 1px));
   background-size: 100% 2rem;
 }
+
 
 /* Print styles — normalised across mobile & desktop */
 @media print {
@@ -211,7 +245,27 @@
     padding-bottom: 4pt;
   }
 
+  /* Section cards — flatten in print */
+  .pdi-section-card {
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    padding: 3pt 0 3pt 6pt !important;
+    margin-bottom: 3pt !important;
+    border-color: transparent !important;
+    background: none !important;
+  }
+
+  /* Preserve accent borders in print */
+  .pdi-accent-blue   { border-left-color: #3b82f6 !important; }
+  .pdi-accent-amber  { border-left-color: #f59e0b !important; }
+  .pdi-accent-green  { border-left-color: #22c55e !important; }
+  .pdi-accent-orange { border-left-color: #f97316 !important; }
+  .pdi-accent-indigo { border-left-color: #6366f1 !important; }
+  .pdi-accent-teal   { border-left-color: #14b8a6 !important; }
+  .pdi-accent-purple { border-left-color: #a855f7 !important; }
+
   /* Keep grouped sections together on the same page */
+
   .print-page-group {
     page-break-inside: avoid;
     break-inside: avoid;

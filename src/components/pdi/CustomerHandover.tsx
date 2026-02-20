@@ -6,6 +6,7 @@ import { SignaturePad } from './SignaturePad';
 import { HandoverData } from '@/types/pdi';
 import { ClipboardCheck } from 'lucide-react';
 
+
 interface Props {
   data: HandoverData;
   onUpdate: (field: keyof HandoverData, value: string | boolean) => void;
@@ -22,11 +23,11 @@ const SERVICE_HISTORY_TYPES = ['Full Service History', 'Part Service History', '
 
 export const CustomerHandover = ({ data, onUpdate }: Props) => {
   return (
-    <section className="pdi-section">
+    <section className="pdi-section pdi-section-card pdi-accent-purple">
       <div className="pdi-section-header">
-        <span className="pdi-section-number">8</span>
-        <ClipboardCheck className="h-5 w-5 text-primary" />
-        <h2 className="pdi-section-title">Customer Handover & Acceptance</h2>
+        <span className="pdi-section-number pdi-num-purple">8</span>
+        <ClipboardCheck className="h-5 w-5 text-purple-600" />
+        <h2 className="pdi-section-title">Customer Handover &amp; Acceptance</h2>
       </div>
 
       <div className="space-y-3 mb-6">

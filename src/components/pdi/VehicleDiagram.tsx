@@ -91,10 +91,10 @@ export const VehicleDiagram = ({ damages, damageNotes, onAddDamage, onRemoveDama
   };
 
   return (
-    <section className="pdi-section">
+    <section className="pdi-section pdi-section-card pdi-accent-amber">
       <div className="pdi-section-header">
-        <span className="pdi-section-number">3</span>
-        <Paintbrush className="h-5 w-5 text-primary" />
+        <span className="pdi-section-number pdi-num-amber">3</span>
+        <Paintbrush className="h-5 w-5 text-amber-600" />
         <h2 className="pdi-section-title">Cosmetic Condition</h2>
       </div>
 
@@ -213,7 +213,7 @@ export const VehicleDiagram = ({ damages, damageNotes, onAddDamage, onRemoveDama
               <Badge key={d.id} variant="outline" className="gap-1.5 py-1 text-xs">
                 <span className="w-2 h-2 rounded-full" style={{ backgroundColor: DAMAGE_COLORS[d.type] }} />
                 {d.panel} — <span className="capitalize">{d.type}</span>
-                <button onClick={() => onRemoveDamage(d.id)} className="ml-1 hover:text-destructive no-print">
+                <button onClick={() => onRemoveDamage(d.id)} className="ml-1 hover:text-destructive no-print p-0.5 min-w-[20px] min-h-[20px] flex items-center justify-center">
                   <X className="h-3 w-3" />
                 </button>
               </Badge>

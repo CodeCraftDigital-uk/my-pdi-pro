@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
-import { ChevronDown, ChevronUp, FileText } from 'lucide-react';
+import { ChevronDown, ChevronUp, FileText, AlertCircle } from 'lucide-react';
 
 interface Props {
   accepted: boolean;
@@ -13,22 +13,24 @@ export const TermsAndConditions = ({ accepted, onAcceptChange, customerName }: P
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <section className="mt-8 border border-border rounded-lg overflow-hidden">
-      <div className="bg-muted/30 px-5 py-4 flex items-center justify-between">
+    <section className="mt-8 border-2 border-border rounded-xl overflow-hidden shadow-sm pdi-section-card pdi-accent-purple">
+      {/* Header */}
+      <div className="bg-muted/40 px-5 py-4 flex items-center justify-between border-b border-border">
         <div className="flex items-center gap-2">
-          <FileText className="h-5 w-5 text-primary" />
+          <FileText className="h-5 w-5 text-purple-600" />
           <h2 className="font-semibold text-base">Terms &amp; Conditions of Sale</h2>
         </div>
         <button
           type="button"
           onClick={() => setExpanded(!expanded)}
-          className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1 no-print"
+          className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1.5 no-print px-3 py-1.5 rounded-lg hover:bg-secondary transition-colors"
         >
-          {expanded ? 'Collapse' : 'Expand'}
+          {expanded ? 'Collapse' : 'Expand to read'}
           {expanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
         </button>
       </div>
 
+      {/* T&C body */}
       <div className={`px-5 py-4 text-sm leading-relaxed space-y-4 tc-print-compact ${expanded ? '' : 'hidden'} print-show`}>
         <p className="text-xs text-muted-foreground italic">(Motor Vehicle Sales – On-Site, Distance, Finance &amp; PCP)</p>
 
@@ -165,17 +167,23 @@ export const TermsAndConditions = ({ accepted, onAcceptChange, customerName }: P
         </div>
       </div>
 
-      {/* Acceptance section - always visible */}
-      <div className="px-5 py-4 border-t border-border bg-muted/10">
+      {/* Acceptance section — prominently highlighted */}
+      <div className={`px-5 py-5 border-t-2 ${accepted ? 'bg-success/5 border-success/30' : 'bg-warning/5 border-warning/40'} transition-colors`}>
+        {!accepted && (
+          <div className="flex items-center gap-2 mb-3 text-warning text-sm font-medium no-print">
+            <AlertCircle className="h-4 w-4 shrink-0" />
+            <span>Customer acceptance required before generating report</span>
+          </div>
+        )}
         <div className="flex items-start gap-3">
           <Checkbox
             id="tc-accepted"
             checked={accepted}
             onCheckedChange={(val) => onAcceptChange(val === true)}
-            className="mt-0.5 no-print"
+            className="mt-0.5 no-print h-5 w-5"
           />
-          <Label htmlFor="tc-accepted" className="text-sm leading-snug cursor-pointer">
-            I, <span className="font-semibold">{customerName || '_______________'}</span>, confirm that I have read, understood, and agreed to the Terms &amp; Conditions of Sale (Motor Vehicle Sales – On-Site, Distance, Finance &amp; PCP), including the Wear-and-Tear provisions.
+          <Label htmlFor="tc-accepted" className={`text-sm leading-relaxed cursor-pointer ${accepted ? 'text-foreground' : 'text-foreground'}`}>
+            I, <span className="font-bold">{customerName || '_______________'}</span>, confirm that I have read, understood, and agreed to the Terms &amp; Conditions of Sale (Motor Vehicle Sales – On-Site, Distance, Finance &amp; PCP), including the Wear-and-Tear provisions.
           </Label>
         </div>
         {/* Print version shows checkbox state */}
@@ -185,7 +193,7 @@ export const TermsAndConditions = ({ accepted, onAcceptChange, customerName }: P
       </div>
 
       {/* Signature section */}
-      <div className="px-5 py-4 border-t border-border">
+      <div className="px-5 py-4 border-t border-border bg-card">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <div className="space-y-2">
             <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Customer Signature</Label>
