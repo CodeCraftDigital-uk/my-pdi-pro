@@ -8,6 +8,7 @@ import {
   Award,
   Users,
   CheckCircle2,
+  FileSignature,
 } from 'lucide-react';
 import autoprovIcon from '@/assets/autoprov_icon.png';
 
@@ -31,6 +32,17 @@ const tools: ToolCard[] = [
     description: 'Comprehensive Pre-Delivery Inspection compliance and condition report for used vehicles. CRA 2015 compliant.',
     status: 'active',
     path: '/pdi',
+    accentClass: 'border-l-[#2d6aad]',
+    iconBgClass: 'bg-[#e8f0f9]',
+    iconColorClass: 'text-[#1e3a5f]',
+  },
+  {
+    id: 'distance-sale',
+    icon: <FileSignature size={28} />,
+    title: 'Digital Distance Sale Pack',
+    description: 'Generate a legally structured, exportable PDF compliance pack for distance vehicle sales. CRA 2015 & Consumer Contracts Regulations compliant.',
+    status: 'active',
+    path: '/distance-sale',
     accentClass: 'border-l-[#2d6aad]',
     iconBgClass: 'bg-[#e8f0f9]',
     iconColorClass: 'text-[#1e3a5f]',
