@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   ClipboardCheck,
@@ -10,6 +11,11 @@ import {
   CheckCircle2,
   FileSignature,
   Scale,
+  ChevronDown,
+  BookOpen,
+  Gavel,
+  Car,
+  FileText,
 } from 'lucide-react';
 import autoprovIcon from '@/assets/autoprov_icon.png';
 
@@ -77,8 +83,59 @@ const trustItems = [
   { icon: <Users size={16} />, label: 'Trusted by Automotive Professionals' },
 ];
 
+const faqs = [
+  {
+    q: 'What is AutoProv and who is it for?',
+    a: 'AutoProv is a professional automotive compliance platform built specifically for UK used car dealers and motor trade professionals. It provides three free digital tools — a Used Vehicle PDI Report, a Digital Distance Sale Pack generator, and an AI-powered Dispute Response Builder — to help dealers meet their legal obligations under the Consumer Rights Act 2015 (CRA 2015) and the Consumer Contracts Regulations 2013 (CCR 2013).',
+  },
+  {
+    q: 'What is a PDI report and why do used car dealers need one?',
+    a: 'A Pre-Delivery Inspection (PDI) report is a formal document recording the mechanical and cosmetic condition of a used vehicle before it is handed over to a buyer. Under the Consumer Rights Act 2015, a vehicle must be of satisfactory quality, fit for purpose, and as described at the point of sale. A completed PDI report provides critical evidence of the vehicle\'s condition if a buyer later raises a fault or seeks to reject the vehicle under the 30-day short-term right to reject.',
+  },
+  {
+    q: 'Do UK car dealers need a Distance Sale Pack?',
+    a: 'Yes. If a UK car dealer sells a vehicle remotely — online, by phone, or without the buyer visiting the premises in person — the sale is classified as a distance sale under the Consumer Contracts (Information, Cancellation and Additional Charges) Regulations 2013. The dealer must provide mandatory pre-contract information and notify the buyer of their 14-day cooling-off right to cancel. Failure to comply is a criminal offence and extends the cancellation period to 12 months. AutoProv\'s Distance Sale Pack generator creates a fully compliant document in minutes.',
+  },
+  {
+    q: 'How does the AI Dispute Response Builder work?',
+    a: 'The AI Dispute Response Builder guides dealers through a 7-step process: entering sale details, recording time and usage since sale, describing the customer\'s complaint, logging supporting evidence (PDI report, service history, DVLA data), and then generating a professional, legally-referenced response letter using Google Gemini AI. The letter references relevant sections of the Consumer Rights Act 2015, the 6-month burden of proof rule, and applicable case law.',
+  },
+  {
+    q: 'What consumer law applies to used car sales in the UK?',
+    a: 'The primary legislation is the Consumer Rights Act 2015 (CRA 2015), which requires goods — including used cars — to be of satisfactory quality, fit for purpose, and as described. Buyers have a 30-day short-term right to reject faulty vehicles. Within the first 6 months of purchase, faults are presumed to have existed at the point of sale unless the dealer can prove otherwise. For remote or online sales, the Consumer Contracts Regulations 2013 (CCR 2013) additionally grant consumers a 14-day right to cancel.',
+  },
+  {
+    q: 'Is AutoProv free to use?',
+    a: 'Yes. AutoProv\'s three compliance tools — the PDI Report, Distance Sale Pack generator, and AI Dispute Response Builder — are all free to use for UK used car dealers and motor trade professionals. No account registration is required.',
+  },
+];
+
+const legalFrameworks = [
+  {
+    icon: <Gavel size={20} />,
+    title: 'Consumer Rights Act 2015',
+    description: 'Governs the quality and fitness of used vehicles. Dealers must understand the 30-day right to reject, the 6-month burden of proof reversal, and the right to repair or replace.',
+  },
+  {
+    icon: <FileText size={20} />,
+    title: 'Consumer Contracts Regulations 2013',
+    description: 'Applies to all distance and online vehicle sales. Mandatory 14-day cooling-off period, pre-contract information requirements, and cancellation rights for remote buyers.',
+  },
+  {
+    icon: <Car size={20} />,
+    title: 'Road Traffic Act',
+    description: 'Vehicle roadworthiness obligations at the point of sale. A dealer must not knowingly sell an unroadworthy vehicle. PDI records support compliance evidence.',
+  },
+  {
+    icon: <BookOpen size={20} />,
+    title: 'Sale of Goods Act 1979',
+    description: 'Underlying principles relevant to dealer-to-dealer transactions and older pre-CRA sales. Implied terms of satisfactory quality and fitness for purpose.',
+  },
+];
+
 const Landing = () => {
   const navigate = useNavigate();
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50">
@@ -242,6 +299,146 @@ const Landing = () => {
           })}
         </div>
       </main>
+
+      {/* ── SEO / AEO Content Section ── */}
+      <section
+        aria-label="About AutoProv — UK Automotive Compliance Platform"
+        className="bg-white border-t border-slate-200"
+      >
+        <div className="max-w-5xl mx-auto px-6 py-16 space-y-16">
+
+          {/* ── Platform Overview ── */}
+          <div className="text-center max-w-3xl mx-auto">
+            <p className="text-xs font-bold tracking-[0.2em] uppercase text-slate-400 mb-3">About This Platform</p>
+            <h2 className="text-3xl font-extrabold text-slate-900 mb-4 leading-tight">
+              Free Compliance Tools for UK Used Car Dealers
+            </h2>
+            <p className="text-slate-600 text-base leading-relaxed">
+              AutoProv provides professional automotive compliance software designed specifically for independent used car dealers and motor trade businesses in the United Kingdom. Our digital tools remove the paperwork burden and help dealers meet their legal obligations under the <strong>Consumer Rights Act 2015 (CRA 2015)</strong> and the <strong>Consumer Contracts Regulations 2013 (CCR 2013)</strong> — with no account required.
+            </p>
+          </div>
+
+          {/* ── Tool Descriptions ── */}
+          <div>
+            <h3 className="text-xl font-bold text-slate-800 mb-6 text-center">
+              Three Tools. Full Compliance Coverage.
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+              <article className="bg-slate-50 rounded-xl border border-slate-200 p-6">
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-4" style={{ background: '#e8f0f9', color: '#1e3a5f' }}>
+                  <ClipboardCheck size={20} />
+                </div>
+                <h4 className="text-base font-bold text-slate-800 mb-2">Used Vehicle PDI Report</h4>
+                <p className="text-sm text-slate-600 leading-relaxed">
+                  A digital <strong>Pre-Delivery Inspection (PDI) report</strong> tool for UK used car dealers. Record the mechanical condition, tyre tread depths, brake performance, and cosmetic state of any used vehicle before handover. Capture customer signatures and generate a printable PDF. Protects dealers under <strong>CRA 2015</strong> if a buyer later claims a fault existed at the point of sale.
+                </p>
+              </article>
+
+              <article className="bg-slate-50 rounded-xl border border-slate-200 p-6">
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-4" style={{ background: '#e8f0f9', color: '#1e3a5f' }}>
+                  <FileSignature size={20} />
+                </div>
+                <h4 className="text-base font-bold text-slate-800 mb-2">Digital Distance Sale Pack</h4>
+                <p className="text-sm text-slate-600 leading-relaxed">
+                  A compliance document generator for dealers selling vehicles <strong>remotely — online, by phone, or at a distance</strong>. Creates a fully compliant pack meeting the <strong>Consumer Contracts (Information, Cancellation and Additional Charges) Regulations 2013</strong>. Includes mandatory pre-contract information, the <strong>14-day cooling-off period</strong> notice, refund policy, and delivery terms — exported as a professional PDF.
+                </p>
+              </article>
+
+              <article className="bg-slate-50 rounded-xl border border-slate-200 p-6">
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-4" style={{ background: '#e8f0f9', color: '#1e3a5f' }}>
+                  <Scale size={20} />
+                </div>
+                <h4 className="text-base font-bold text-slate-800 mb-2">AI Dispute Response Builder</h4>
+                <p className="text-sm text-slate-600 leading-relaxed">
+                  An <strong>AI-powered tool for used car dealers</strong> facing customer complaints. Enter the sale details, complaint description, and supporting evidence, and the AI generates a professional, legally-referenced dispute response letter. References <strong>CRA 2015 sections</strong>, the 6-month burden of proof rule, and relevant case law — helping independent dealers compete without in-house legal teams.
+                </p>
+              </article>
+            </div>
+          </div>
+
+          {/* ── Legal Frameworks ── */}
+          <div>
+            <h3 className="text-xl font-bold text-slate-800 mb-2 text-center">UK Consumer Law AutoProv Covers</h3>
+            <p className="text-sm text-slate-500 text-center mb-8">The legal frameworks every UK used car dealer must understand</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {legalFrameworks.map((law) => (
+                <div key={law.title} className="flex gap-4 p-5 rounded-xl border border-slate-200 bg-slate-50">
+                  <div
+                    className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0 mt-0.5"
+                    style={{ background: '#1e3a5f', color: '#f0c93a' }}
+                  >
+                    {law.icon}
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-bold text-slate-800 mb-1">{law.title}</h4>
+                    <p className="text-sm text-slate-600 leading-relaxed">{law.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* ── FAQ / AEO Section ── */}
+          <div>
+            <h3 className="text-xl font-bold text-slate-800 mb-2 text-center">
+              Frequently Asked Questions
+            </h3>
+            <p className="text-sm text-slate-500 text-center mb-8">
+              Common questions from UK used car dealers about compliance, PDI reports, and consumer law
+            </p>
+            <div className="max-w-3xl mx-auto space-y-3">
+              {faqs.map((faq, i) => (
+                <div
+                  key={i}
+                  className="border border-slate-200 rounded-xl overflow-hidden bg-white"
+                >
+                  <button
+                    className="w-full flex items-center justify-between gap-4 px-6 py-4 text-left hover:bg-slate-50 transition-colors"
+                    onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                    aria-expanded={openFaq === i}
+                  >
+                    <span className="text-sm font-semibold text-slate-800">{faq.q}</span>
+                    <ChevronDown
+                      size={16}
+                      className={`shrink-0 text-slate-400 transition-transform duration-200 ${openFaq === i ? 'rotate-180' : ''}`}
+                    />
+                  </button>
+                  {openFaq === i && (
+                    <div className="px-6 pb-5 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-4">
+                      {faq.a}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* ── Who It's For ── */}
+          <div className="rounded-2xl border border-slate-200 p-8" style={{ background: 'linear-gradient(135deg, #1a3558 0%, #1e3f6b 100%)' }}>
+            <h3 className="text-xl font-bold text-white mb-4 text-center">Who AutoProv Is For</h3>
+            <p className="text-slate-300 text-sm text-center mb-8 max-w-xl mx-auto">
+              AutoProv is built for UK motor trade professionals who need reliable compliance tools without the cost of specialist legal advice.
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 max-w-3xl mx-auto">
+              {[
+                'Independent used car dealers',
+                'Franchised motor dealers',
+                'Car supermarkets',
+                'Vehicle auction traders',
+                'Online-only car retailers',
+                'Motor trade compliance managers',
+              ].map((role) => (
+                <div key={role} className="flex items-center gap-2.5 text-sm text-slate-200">
+                  <CheckCircle2 size={15} style={{ color: '#f0c93a' }} className="shrink-0" />
+                  <span>{role}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+        </div>
+      </section>
 
       {/* ── Footer ── */}
       <footer
