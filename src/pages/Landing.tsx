@@ -1,8 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import {
   ClipboardCheck,
-  Car,
-  FileText,
   Plus,
   ArrowRight,
   Bell,
@@ -36,26 +34,6 @@ const tools: ToolCard[] = [
     accentClass: 'border-l-[#2d6aad]',
     iconBgClass: 'bg-[#e8f0f9]',
     iconColorClass: 'text-[#1e3a5f]',
-  },
-  {
-    id: 'valuation',
-    icon: <Car size={28} />,
-    title: 'Vehicle Valuation',
-    description: 'Professional vehicle appraisal and market valuation tool with live data insights.',
-    status: 'coming-soon',
-    accentClass: 'border-l-amber-400',
-    iconBgClass: 'bg-amber-50',
-    iconColorClass: 'text-amber-700',
-  },
-  {
-    id: 'service-history',
-    icon: <FileText size={28} />,
-    title: 'Service History Log',
-    description: 'Digital service history management and verification tool for your vehicle stock.',
-    status: 'coming-soon',
-    accentClass: 'border-l-amber-400',
-    iconBgClass: 'bg-amber-50',
-    iconColorClass: 'text-amber-700',
   },
   {
     id: 'more',
