@@ -12,10 +12,10 @@ interface Props {
 
 export const CRACompliance = ({ checks, onToggle, confirmed, onConfirmChange }: Props) => {
   return (
-    <section className="pdi-section">
+    <section className="pdi-section pdi-section-card pdi-accent-teal">
       <div className="pdi-section-header">
-        <span className="pdi-section-number">7</span>
-        <Scale className="h-5 w-5 text-primary" />
+        <span className="pdi-section-number pdi-num-teal">7</span>
+        <Scale className="h-5 w-5 text-teal-600" />
         <h2 className="pdi-section-title">Consumer Rights Act 2015 Compliance</h2>
       </div>
 
