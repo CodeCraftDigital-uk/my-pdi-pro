@@ -1,84 +1,106 @@
 
-# SEO, AEO & AI Search Engine Optimisation
+# Fix AI & Crawler Visibility — Static HTML Content in index.html
 
-## What This Achieves
+## Root Cause
 
-This update makes AutoProv fully discoverable by:
-- **Traditional search engines** (Google, Bing, DuckDuckGo)
-- **AI search platforms** (ChatGPT/OpenAI, Perplexity, Claude/Anthropic, Gemini, Grok)
-- **Social crawlers** (LinkedIn, Facebook, Twitter/X)
-- **Answer Engine Optimisation (AEO)** — structured data so AI assistants can directly answer "what tools do UK car dealers use for CRA compliance?"
+The site is a React Single Page Application (SPA). When ChatGPT, Googlebot, or any crawler visits the URL, the raw HTML they receive looks like this:
 
----
+```text
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+```
 
-## Files Being Created or Modified
+That is all they see. Every tool description, FAQ answer, legal framework explanation, and keyword-rich paragraph lives inside React components that only render after JavaScript executes — which AI crawlers like ChatGPT cannot do.
 
-### 1. `public/robots.txt` — Updated
-Add explicit permission for every major AI crawler bot alongside existing search bots:
-
-- `GPTBot` — OpenAI / ChatGPT
-- `ClaudeBot` — Anthropic / Claude
-- `PerplexityBot` — Perplexity AI
-- `Googlebot-Extended` — Google AI Overviews / Gemini
-- `cohere-ai` — Cohere
-- `YouBot` — You.com AI search
-- `Applebot` — Apple AI / Siri
-- `DuckAssistBot` — DuckDuckGo AI
-- `Meta-ExternalAgent` — Meta AI
-- `Bytespider` — TikTok/ByteDance AI
-
-Also adds `Sitemap:` declaration pointing to `/sitemap.xml`.
+The robots.txt, sitemap.xml, llms.txt, and JSON-LD structured data are all correctly in place. But the actual page body content is invisible because it does not exist in the HTML source.
 
 ---
 
-### 2. `public/sitemap.xml` — New File
-A valid XML sitemap covering all public routes:
-- `/` — Home / Landing
-- `/pdi` — Used Vehicle PDI
-- `/distance-sale` — Digital Distance Sale Pack
-- `/dispute-response` — Dispute Response Builder
+## The Fix
 
-Includes `<lastmod>`, `<changefreq>`, and `<priority>` for each URL, using the published domain `https://my-pdi-pro.lovable.app`.
+Embed a complete, keyword-rich, semantically structured static HTML content block directly inside `<body>` in `index.html`, before the `<div id="root">`. This content is:
 
----
+- Immediately readable by every crawler on first request, before any JavaScript runs
+- Visually hidden from users (React will replace it when it mounts)
+- Identical in substance to what the React page renders, so there is no cloaking issue
 
-### 3. `public/llms.txt` — New File
-This is the emerging **AI-native discovery standard** (similar to `robots.txt` but specifically for LLMs). It provides a plain-text, structured summary of what AutoProv is, what tools it offers, who it is for, and how AI assistants should represent it when users ask questions. Perplexity, ChatGPT, and other AI platforms increasingly read this file.
+This is the standard approach for SPA discoverability without adding a full SSR framework.
 
 ---
 
-### 4. `index.html` — Structured Data & Enhanced Meta Tags
-Add JSON-LD structured data blocks (the machine-readable layer that powers Google's AI Overviews, rich snippets, and AEO responses):
+## What Goes Into the Static Block
 
-- **`Organization` schema** — brand identity, name, URL
-- **`WebSite` schema** — with `SearchAction` for sitelinks search box
-- **`SoftwareApplication` schema** — describes AutoProv as a SaaS tool
-- **`ItemList` schema** — lists all three tools as individual `ListItem` entries with name, description and URL, so AI can enumerate them
-- **`FAQPage` schema** — pre-answers common questions like "What is AutoProv?", "What is a PDI report?", "Do UK car dealers need a Distance Sale Pack?", "What is the CRA 2015?" — these are the exact questions potential customers ask AI assistants
+The static HTML block will contain all the content crawlers need, structured with proper semantic HTML tags:
 
-Additional meta tags:
-- `<meta name="keywords">` — UK motor trade, CRA compliance, PDI, distance selling, dispute response
-- `<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">` — explicit permission for AI snippet extraction
-- `<link rel="canonical">` — prevents duplicate content issues
-- `<meta name="theme-color">` — brand colour for mobile browsers
+**1. Site identity and purpose**
+- `<h1>` — AutoProv Compliance Tools
+- Platform description paragraph explaining AutoProv is the broader platform and these are the compliance tools module
+
+**2. Three tool descriptions (each as an `<article>` with `<h2>` and `<p>`)**
+- Used Vehicle PDI Report — with keywords: pre-delivery inspection, used car, CRA 2015, mechanical condition, tyre depth, signature, PDF
+- Digital Distance Sale Pack — with keywords: distance sale, CCR 2013, 14-day cooling-off, online car sales, mandatory disclosures
+- AI Dispute Response Builder — with keywords: CRA 2015 dispute, consumer complaint response, used car dealer, AI legal letter
+
+**3. Legal frameworks section**
+- Consumer Rights Act 2015 — 30-day right to reject, 6-month burden of proof, satisfactory quality
+- Consumer Contracts Regulations 2013 — distance selling, cooling-off period, mandatory pre-contract information
+- Road Traffic Act — roadworthiness obligations
+- Sale of Goods Act 1979 — implied terms
+
+**4. Who it is for**
+- Independent used car dealers, online retailers, franchised dealers, motor trade compliance officers
+
+**5. FAQ block (7 Q&A pairs as `<details>`/`<summary>` or plain `<div>` pairs)**
+- What are the AutoProv Compliance Tools?
+- What is AutoProv?
+- What is a PDI report?
+- Do UK car dealers need a Distance Sale Pack?
+- How does the AI Dispute Response Builder work?
+- What consumer law applies to used car sales?
+- Are the tools free?
 
 ---
 
-## Technical Notes
+## Technical Implementation
 
-- No backend changes required — all files are static and served from `public/`
-- The JSON-LD structured data in `index.html` is invisible to users but machine-readable by all crawlers
-- The `llms.txt` file follows the draft specification at `llmstxt.org`
-- The `FAQPage` schema directly answers the kinds of questions UK car dealers search for on AI platforms
-- All canonical URLs use the published domain `https://my-pdi-pro.lovable.app`
+**File modified:** `index.html` only.
+
+The static block is placed inside `<body>`, immediately after `<body>` opens and before `<div id="root">`:
+
+```html
+<body>
+  <!-- Static crawler content — hidden once React mounts -->
+  <div id="crawler-content" style="position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden;" aria-hidden="true">
+    ... all static HTML content ...
+  </div>
+
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+```
+
+The `style` on the wrapper positions the block off-screen (not `display:none`, which some crawlers treat as hidden/cloaked). The content remains in the DOM and is fully readable by HTTP crawlers that parse HTML source. `aria-hidden="true"` prevents screen readers from reading it twice once React renders the visible version.
 
 ---
 
-## Summary of Files
+## Why This Works for ChatGPT / AI Crawlers
 
-| File | Action | Purpose |
-|---|---|---|
-| `public/robots.txt` | Update | Allow all AI crawlers + add sitemap declaration |
-| `public/sitemap.xml` | Create | Help search engines find all pages |
-| `public/llms.txt` | Create | AI-native discovery standard for LLM platforms |
-| `index.html` | Update | JSON-LD structured data + enhanced meta tags |
+ChatGPT's browsing tool and most AI crawlers (ClaudeBot, PerplexityBot, Googlebot) issue an HTTP request and parse the raw HTML response. They do not execute JavaScript. By placing static HTML in the document before `<div id="root">`, the content is present in the HTTP response body and will be parsed and indexed immediately.
+
+---
+
+## Files Changed
+
+| File | Change |
+|---|---|
+| `index.html` | Add static HTML content block inside `<body>` before `<div id="root">` |
+
+No other files need changing. robots.txt, sitemap.xml, llms.txt, and the JSON-LD structured data are already correct.
+
+---
+
+## Important Note on Domain
+
+The canonical URL in `index.html` currently points to `https://my-pdi-pro.lovable.app/`. If `autexa.ai` is the live domain, the canonical and structured data URLs should be updated to match. This will be corrected as part of this change.
