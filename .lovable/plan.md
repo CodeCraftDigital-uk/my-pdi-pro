@@ -1,156 +1,154 @@
 
-# UI/UX Improvement Plan
+# Landing Page / Navigation Portal Plan
 
-## Current State Assessment
+## Brand Analysis
 
-After reviewing every component and the full CSS, here are the key areas where the experience can be meaningfully improved:
+From the logo (`autoprov_icon.png`), the brand palette is:
+- **Steel Blue** (left of shield): `#1e3a5f` to `#2d6aad`
+- **Gold/Amber** (right of shield): `#c9a227` to `#b8860b`
+- **Silver/Chrome**: accent highlights on the checkmark
+- Brand name: **AutoProv** (from `autoprov_icon.png`)
 
-**Issues identified:**
-- The page is one long, unbroken scroll with no visual progress indication — users don't know how far through they are or what's coming next
-- The header feels understated for a professional compliance tool — the logo and title could carry more authority
-- Section cards all look identical with the same flat white background — there is no visual hierarchy between sections
-- The action buttons (Generate Report, Print, Download) are at the very bottom — users must scroll the entire form to reach them, and there is no sticky shortcut
-- The error banner at the top gives a plain list without any clear mapping to where in the form the problem lives
-- The Mechanical Checklist checkboxes lack a quick "check all" option, which requires clicking 10 items individually
-- The colour palette is very neutral — the success/warning/danger states are muted and could be more visually distinct
-- The Terms & Conditions section is collapsed by default with a small, easy-to-miss expand button — a professional tool should draw attention to this critical section
-- No "completion percentage" or progress feedback anywhere on the form
-- The Generate Report / Print / Download buttons are visually identical in weight — there is no clear primary action call-to-action hierarchy
-- Tyre and brake table rows have no alternating background to aid readability
-- Mobile touch targets on small elements (damage badges, X remove buttons) are very small
+The landing page will use these exact colours to create a cohesive, professional platform portal.
 
 ---
 
-## Proposed Improvements
+## Architecture Change
 
-### 1. Sticky Progress Bar + Section Navigator (Header Enhancement)
-Add a slim sticky top bar (hidden on print) that shows:
-- A horizontal progress indicator (e.g. "Section 4 of 8")
-- A percentage fill bar that updates as fields are completed
-- A "Jump to top" shortcut button once the user scrolls down
+Currently, `/` goes straight to the PDI form (`Index.tsx`). The new structure will be:
 
-This gives users constant orientation in the form.
-
-### 2. Enhanced Header Section
-- Add a coloured accent strip / banner across the top with a gradient background using the primary colour
-- Make the logo and title more prominent
-- Display Report ID and date in styled chips/pills rather than plain text
-- Add a subtle "Professional PDI Compliance Form" subtitle badge
-
-### 3. Section Card Elevation & Visual Hierarchy
-Wrap each `pdi-section` in a visible card with:
-- A left-side coloured accent border (matching the section's icon colour)
-- A subtle card shadow (`shadow-sm`) to lift each section off the background
-- The section number badge given a stronger, more distinct style (currently all the same primary colour — make each section's number a slightly different shade or use a more prominent pill)
-
-### 4. Primary Action Toolbar (Sticky Bottom Bar)
-Add a sticky bottom action bar (no-print) that stays visible as the user scrolls, containing:
-- **Generate Report** as the clearly dominant primary action (larger, filled, brand colour)
-- **Print** and **Download as PDF** as secondary ghost/outline actions
-- A completion status indicator (e.g. "3 fields required")
-
-This removes the need to scroll to the very bottom of the document to act.
-
-### 5. Improved Error Display
-Replace the plain error list with a more visible alert banner:
-- Use a stronger visual treatment with an icon per error
-- Each error becomes a clickable link that scrolls to and highlights the relevant section
-- Add a count badge: "3 issues found"
-
-### 6. Mechanical Checklist — "Select All" Toggle
-Add a "Check All / Uncheck All" toggle above the mechanical checklist grid. This is a common quality-of-life improvement for inspection forms where all items pass.
-
-### 7. Tyre & Brake Table — Alternating Row Colours
-Add `even:bg-muted/30` styling to table rows in `TyreSection` and `BrakeSection` for better readability, and make the status badges more visually prominent (green pill for pass, amber pill for warn, red pill for fail).
-
-### 8. Colour-coded Section Accent Borders
-Each section gets a unique left-border accent colour:
-- Vehicle Details: blue
-- Cosmetic Condition: amber
-- Tyres: green
-- Brakes: orange
-- Mechanical: indigo
-- CRA Compliance: teal
-- Customer Handover: purple
-
-### 9. Terms & Conditions — Highlighted Acceptance Area
-Make the T&C acceptance section more visually prominent with a stronger border and background to ensure it is not missed.
-
-### 10. Responsive Touch Target Improvements
-- Increase the X (remove damage) button size on mobile
-- Ensure all checkbox labels have adequate tap area padding on mobile
+- `/` → New **Landing Page** (`src/pages/Landing.tsx`) — the navigation portal
+- `/pdi` → Existing PDI form (renamed route, `Index.tsx` unchanged)
+- `App.tsx` updated to add the new route
 
 ---
 
-## Technical Changes Required
+## Landing Page Design
 
-### Files to Modify
-
-**`src/index.css`**
-- Add `.pdi-section-card` with card shadow and left accent border
-- Add `.sticky-action-bar` styles
-- Add `.progress-bar` animation styles
-- Improve table row alternating styles
-- Enhance status badge styles
-
-**`src/pages/Index.tsx`**
-- Add sticky bottom action toolbar
-- Move action buttons into sticky bar
-- Add progress calculation logic (count of filled required fields)
-- Improve error display with section jump links
-- Add scroll progress tracking
-
-**`src/components/pdi/HeaderSection.tsx`**
-- Add gradient/accent background treatment
-- Style Report ID and Date as chips
-- Increase visual weight of branding
-
-**`src/components/pdi/MechanicalChecklist.tsx`**
-- Add "Check All / Uncheck All" button
-- Pass a callback or compute from existing `onToggle` calls
-
-**`src/components/pdi/TyreSection.tsx`**
-- Add alternating row colours
-- Upgrade status indicators to pill badges
-
-**`src/components/pdi/BrakeSection.tsx`**
-- Add alternating row colours
-- Upgrade status indicators to pill badges
-
-**`src/components/pdi/TermsAndConditions.tsx`**
-- Enhance acceptance section visual prominence
-- Auto-expand on first render or add an attention-drawing animation
-
----
-
-## What Will NOT Change
-- Print styles — no changes to `@media print` rules to preserve the consistent print layout already achieved
-- Form data structure — no changes to `types/pdi.ts` or `usePDIForm.ts`
-- The overall page layout and component ordering
-- All existing functionality
-
----
-
-## Visual Flow After Changes
+### Layout Structure
 
 ```text
-┌─────────────────────────────────────────────────────┐
-│  [Logo] Used Vehicle PDI          Report: PDI-XXXX  │  ← Enhanced header with gradient accent
-│  Progress: ████████░░░░  62% complete               │
-└─────────────────────────────────────────────────────┘
+┌────────────────────────────────────────────────────────────────┐
+│  [Shield Logo]  AutoProv                        [Platform v1]  │  ← Full-width hero header
+│  Gradient: steel blue (left) → dark navy (right)               │
+│                                                                 │
+│  "Your Professional Automotive Compliance Platform"             │
+│  "Select a tool below to get started"                          │
+└────────────────────────────────────────────────────────────────┘
 
-┌─ 2 │ 🚗 Vehicle Details ─────────────────────────── ←─ Card with left accent border + shadow
-│  Make  │  Model  │  Variant  │  Reg  │  VIN ...      │
-└─────────────────────────────────────────────────────┘
+┌────────────────────────────────────────────────────────────────┐
+│                       SELECT A TOOL                            │
+│                                                                 │
+│  ┌─────────────────────┐    ┌─────────────────────┐           │
+│  │  [Clipboard Icon]   │    │  [Car Icon]          │           │
+│  │  Blue left border   │    │  Gold left border    │           │
+│  │                     │    │  (coming soon card)  │           │
+│  │  Used Vehicle PDI   │    │  Vehicle Valuation   │           │
+│  │  Compliance &       │    │  (Coming Soon)       │           │
+│  │  Condition Report   │    │                      │           │
+│  │                     │    │                      │           │
+│  │  [Launch Tool →]    │    │  [Notify Me]         │           │
+│  └─────────────────────┘    └─────────────────────┘           │
+│                                                                 │
+│  ┌─────────────────────┐    ┌─────────────────────┐           │
+│  │  [FileText Icon]    │    │  [Plus Icon]         │           │
+│  │  Service History    │    │  More tools          │           │
+│  │  (Coming Soon)      │    │  coming soon...      │           │
+│  └─────────────────────┘    └─────────────────────┘           │
+└────────────────────────────────────────────────────────────────┘
 
-┌─ 4 │ ⚙️ Tyre Measurements ──────────────────────────
-│  Position │ Depth │ Min  │ Status                    │
-│  FL       │ 4.2   │ 1.6  │ ✓ Pass  (green pill)     │
-│  FR       │ 1.2   │ 1.6  │ ✗ FAIL  (red pill)       │  ← Alternating rows
-└─────────────────────────────────────────────────────┘
-
-═══════════════════════════════════════════════════════
-  [✓ Generate Report]  [Print]  [Download PDF]         ← Sticky bottom bar
-  3 required fields remaining                          ←
-═══════════════════════════════════════════════════════
+┌────────────────────────────────────────────────────────────────┐
+│  AutoProv Platform  ·  Professional Automotive Compliance       │  ← Footer
+│  Consumer Rights Act 2015 Compliant                            │
+└────────────────────────────────────────────────────────────────┘
 ```
+
+### Tool Cards Design
+
+**Active card (Used Vehicle PDI)**:
+- White background, `shadow-md`, rounded-xl border
+- Left accent border in steel blue (`border-l-4 border-blue-600`)
+- Icon in a blue-tinted circular badge
+- Title, description, "Active" green badge
+- Prominent "Launch Tool →" CTA button in brand blue
+- Hover: lifts with `shadow-xl`, slight scale up (`scale-[1.02]`)
+
+**Coming Soon cards**:
+- Same card structure but muted/greyed out
+- Amber/gold left accent border
+- "Coming Soon" badge instead of "Active"
+- Disabled "Notify Me" button (outline style)
+- Slight opacity reduction to distinguish from active
+
+### Hero Section
+
+- Full-width gradient background: `from-[#1a3558] via-[#1e3f6b] to-[#0f2240]`
+- Gold decorative accent line or subtle pattern overlay
+- Large logo (96x96px) with a glowing/shadow effect
+- Platform name **"AutoProv"** in large white bold text
+- Tagline: *"Professional Automotive Compliance Platform"*
+- Subtle animated gradient shimmer on the gold accent elements
+
+### Stats/Trust Bar (below hero)
+
+A thin bar showing platform credibility:
+- "Consumer Rights Act 2015 Compliant"
+- "Professional PDI Reports"
+- "Trusted by Automotive Professionals"
+
+---
+
+## Files to Create / Modify
+
+### New File: `src/pages/Landing.tsx`
+
+The complete landing page component including:
+- Hero header section with logo, title, tagline
+- Tool card grid (responsive: 1 col mobile, 2 col tablet+)
+- Trust/stats bar
+- Footer strip
+
+### Modified: `src/App.tsx`
+
+Add a new route:
+```
+Route path="/"    → Landing (new)
+Route path="/pdi" → Index (existing PDI form)
+```
+
+### No changes to:
+- `src/pages/Index.tsx` (PDI form — untouched)
+- All PDI components — untouched
+- All print styles — untouched
+- `src/index.css` — no changes needed (Landing uses Tailwind utility classes only)
+
+---
+
+## Colour Tokens Used
+
+| Element | Colour |
+|---|---|
+| Hero background | `#1a3558` → `#0f2240` gradient |
+| Gold accent (logo shimmer, active badge borders) | `#c9a227` |
+| Active tool card left border | `border-blue-600` |
+| Coming soon card left border | `border-amber-400` |
+| Launch button | `bg-[#1e3a5f]` with `hover:bg-[#2d5a9e]` |
+| Card background | `bg-white` with `shadow-md` |
+| Page background | `bg-slate-50` |
+
+---
+
+## Responsive Behaviour
+
+- **Mobile**: Single column card grid, hero text scales down, logo centred
+- **Tablet (md)**: 2-column card grid
+- **Desktop (lg+)**: 2-column or 3-column card grid with max-width container
+
+---
+
+## Navigation Flow
+
+When a user lands on the site they will see the portal. Clicking "Launch Tool →" on the PDI card navigates to `/pdi`. The existing PDI header retains its back-button or the user can navigate back via the browser.
+
+Optionally, a small "← Back to Portal" link can be added at the top of the PDI page (non-printing) so users can return to the landing page without using the browser back button.
+
