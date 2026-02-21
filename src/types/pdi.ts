@@ -13,6 +13,7 @@ export interface VehicleDetailsData {
   dateHandover: Date | undefined;
   technicianName: string;
   salesExecutive: string;
+  dealershipName: string;
 }
 
 export type DamageType = 'scratch' | 'dent' | 'chip' | 'scuff' | 'crack';

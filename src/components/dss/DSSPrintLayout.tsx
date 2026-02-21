@@ -47,14 +47,18 @@ const DSSPrintLayout = ({ form }: Props) => {
       {/* ── PAGE HEADER (repeats each page) ── */}
       <div className="dss-page-header">
         <div className="dss-header-left">
-          <img src={autoprovIcon} alt="AutoProv" className="dss-logo" />
           <div>
-            <div className="dss-brand">AutoProv</div>
+            <div className="dss-brand">{dealer.businessName || 'Business Name'}</div>
             <div className="dss-brand-sub">Digital Distance Sale Pack</div>
           </div>
         </div>
         <div className="dss-header-right">
-          <div className="dss-pack-id">Pack ID: {form.packId}</div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '3pt', justifyContent: 'flex-end' }}>
+            <img src={autoprovIcon} alt="AutoProv" className="dss-logo" />
+            <span style={{ fontSize: '8pt', fontWeight: 700, color: '#1a3558' }}>AutoProv</span>
+          </div>
+          <div className="autoprov-attribution">Generated using the AutoProv Platform</div>
+          <div className="dss-pack-id" style={{ marginTop: '2pt' }}>Pack ID: {form.packId}</div>
           <div className="dss-pack-date">Generated: {now}</div>
         </div>
       </div>
@@ -179,8 +183,8 @@ const DSSPrintLayout = ({ form }: Props) => {
 
       {/* ── FOOTER ── */}
       <div className="dss-print-footer">
-        <span>AutoProv Digital Distance Sale Pack · {form.packId} · Generated {now}</span>
-        <span>This document forms part of the dealer's compliance audit trail. Consumer Rights Act 2015 &amp; Consumer Contracts Regulations 2013 compliant.</span>
+        <span>This report was generated using the AutoProv Platform (autexa.ai). The content of this report is the responsibility of the issuing business.</span>
+        <span>Digital Distance Sale Pack · {form.packId} · Generated {now}</span>
       </div>
     </div>
   );
