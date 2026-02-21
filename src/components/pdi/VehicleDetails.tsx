@@ -92,6 +92,7 @@ export const VehicleDetails = ({ data, onUpdate }: Props) => {
         {field('Engine Size', 'engineSize', { placeholder: 'e.g. 2.0L' })}
         {dateField('Date of PDI', 'datePDI')}
         {dateField('Date of Handover', 'dateHandover')}
+        {field('Dealership Name', 'dealershipName')}
         {field('Technician Name', 'technicianName')}
         {field('Sales Executive', 'salesExecutive')}
       </div>

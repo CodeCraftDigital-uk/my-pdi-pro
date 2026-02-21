@@ -4,9 +4,10 @@ import siteIcon from '@/assets/autoprov_icon.png';
 interface Props {
   reportId: string;
   reportDate: Date;
+  dealershipName?: string;
 }
 
-export const HeaderSection = ({ reportId, reportDate }: Props) => {
+export const HeaderSection = ({ reportId, reportDate, dealershipName }: Props) => {
   return (
     <div className="border-b border-border pb-8 mb-8">
       {/* Gradient accent banner */}
@@ -31,12 +32,21 @@ export const HeaderSection = ({ reportId, reportDate }: Props) => {
         </div>
       </div>
 
-      {/* Print-only header (plain) */}
+      {/* Print-only header */}
       <div className="print-only mb-2">
-        <div className="flex items-center gap-2 mb-1">
-          <img src={siteIcon} alt="PDI Pro" className="h-7 w-7 object-contain" />
-          <h1 className="text-xl font-bold text-foreground">Used Vehicle PDI – Compliance &amp; Condition Report</h1>
+        <div className="flex justify-between items-start mb-1">
+          <div>
+            <p className="text-base font-bold text-foreground">{dealershipName || 'Dealership Name'}</p>
+          </div>
+          <div className="flex flex-col items-end gap-0.5">
+            <div className="flex items-center gap-1">
+              <img src={siteIcon} alt="AutoProv" className="h-5 w-5 object-contain" />
+              <span className="text-[7pt] font-semibold text-foreground">AutoProv</span>
+            </div>
+            <span className="autoprov-attribution">Generated using the AutoProv Platform</span>
+          </div>
         </div>
+        <h1 className="text-lg font-bold text-foreground">Used Vehicle PDI – Compliance &amp; Condition Report</h1>
       </div>
 
       {/* Description */}

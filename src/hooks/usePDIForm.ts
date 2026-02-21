@@ -17,7 +17,7 @@ export const usePDIForm = () => {
     make: '', model: '', variant: '', registration: '', vin: '',
     mileagePDI: '', mileageHandover: '', fuelType: '', transmission: '',
     engineSize: '', datePDI: undefined, dateHandover: undefined,
-    technicianName: '', salesExecutive: '',
+    technicianName: '', salesExecutive: '', dealershipName: '',
   });
 
   const [damages, setDamages] = useState<Damage[]>([]);

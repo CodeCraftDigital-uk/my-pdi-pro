@@ -45,8 +45,11 @@ const DRBPrintLayout = ({ form }: Props) => {
           {exportMeta.dealerEmail && <p className="drb-dealer-email">{exportMeta.dealerEmail}</p>}
         </div>
         <div className="drb-header-right">
-          <img src={autoprovIcon} alt="AutoProv" className="drb-logo" />
-          <p className="drb-brand">AutoProv</p>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '3pt' }}>
+            <img src={autoprovIcon} alt="AutoProv" className="drb-logo" />
+            <p className="drb-brand">AutoProv</p>
+          </div>
+          <p className="autoprov-attribution">Generated using the AutoProv Platform</p>
         </div>
       </div>
 
@@ -176,9 +179,8 @@ const DRBPrintLayout = ({ form }: Props) => {
 
       {/* Footer */}
       <div className="drb-footer">
-        <span>AutoProv Dispute Response Builder · Case ID: {form.caseId}</span>
-        <span>Generated: {now}</span>
-        <span>Consumer Rights Act 2015 Compliant</span>
+        <span>This report was generated using the AutoProv Platform (autexa.ai). The content of this report is the responsibility of the issuing business.</span>
+        <span>Dispute Response Pack · Case ID: {form.caseId} · {now}</span>
       </div>
     </div>
   );

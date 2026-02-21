@@ -211,6 +211,7 @@ const Index = () => {
         <HeaderSection
           reportId={form.reportId}
           reportDate={form.reportDate}
+          dealershipName={form.vehicleDetails.dealershipName}
         />
 
         {/* Print group: Vehicle Details + Cosmetic Condition on same page */}
@@ -295,7 +296,9 @@ const Index = () => {
 
         {/* Print footer */}
         <div className="print-footer">
-          This document forms part of the dealership's compliance audit trail and does not remove or restrict statutory rights under the Consumer Rights Act 2015.
+          This report was generated using the AutoProv Platform (autexa.ai). The content of this report is the responsibility of the issuing business.
+          <br />
+          Used Vehicle PDI Report · {form.reportId} · {form.reportDate.toLocaleDateString('en-GB')}
         </div>
       </div>
 

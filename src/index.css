@@ -754,12 +754,14 @@
 
   .dss-print-footer {
     display: flex !important;
-    justify-content: space-between;
+    flex-direction: column;
+    gap: 1pt;
     font-size: 6pt !important;
     color: #666;
     border-top: 0.5pt solid #ccc;
     padding-top: 3pt;
     margin-top: 8pt;
+    text-align: center;
   }
 }
 
@@ -904,11 +906,21 @@
 
   .drb-footer {
     display: flex !important;
-    justify-content: space-between;
+    flex-direction: column;
+    gap: 1pt;
     font-size: 6pt !important;
     color: #666;
     border-top: 0.5pt solid #ccc;
     padding-top: 3pt;
     margin-top: 10pt;
+    text-align: center;
+  }
+
+  /* AutoProv attribution line — used across all print layouts */
+  .autoprov-attribution {
+    font-size: 6pt !important;
+    color: #888;
+    font-style: italic;
+    text-align: right;
   }
 }
