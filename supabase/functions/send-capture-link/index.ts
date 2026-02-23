@@ -102,7 +102,7 @@ serve(async (req: Request) => {
 </html>`;
 
     const { data, error } = await resend.emails.send({
-      from: "AutoProv <onboarding@resend.dev>",
+      from: "AutoProv <support@autoprov.ai>",
       to: [sellerEmail],
       subject: `Vehicle Capture Request${dealerName ? ` from ${dealerName}` : ""}`,
       html,
