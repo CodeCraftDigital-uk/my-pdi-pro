@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { useCaptureRequests, useUpdateCaptureStatus } from '@/hooks/useCaptureRequest';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Plus, ChevronLeft, Camera } from 'lucide-react';
+import { Plus, ChevronLeft, Camera, ShieldAlert } from 'lucide-react';
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import CreateCaptureModal from '@/components/capture/CreateCaptureModal';
 import CaptureRequestCard from '@/components/capture/CaptureRequestCard';
 import CaptureReviewPanel from '@/components/capture/CaptureReviewPanel';
@@ -75,6 +76,33 @@ const RemoteCapture = () => {
           </div>
           <img src={autoprovIcon} alt="AutoProv" className="w-10 h-10 object-contain opacity-70 ml-auto hidden sm:block" />
         </div>
+
+        {/* Security Disclaimer */}
+        <Alert variant="destructive" className="mb-8 border-2 border-destructive bg-destructive/10">
+          <ShieldAlert className="h-5 w-5" />
+          <AlertTitle className="text-base font-bold">Security Notice — Unprotected Test Environment</AlertTitle>
+          <AlertDescription className="mt-2 text-sm leading-relaxed">
+            <p className="font-semibold mb-1">
+              This platform is currently operating as a test environment without user authentication or access controls.
+            </p>
+            <p className="mb-2">
+              All capture requests, uploaded media, and personal information (including names, email addresses, phone numbers, 
+              vehicle registrations, and VIN numbers) stored within this system are accessible to any individual who accesses 
+              this page. No login or identity verification is required to view, modify, or delete this data.
+            </p>
+            <p className="mb-2">
+              <strong>To protect personal data and comply with data protection obligations, 
+              you must download or print any completed reports immediately and then permanently delete the 
+              capture request from this dashboard.</strong> Do not leave personal or sensitive information stored 
+              in this system longer than is necessary for your immediate use.
+            </p>
+            <p className="text-xs opacity-80">
+              By continuing to use this platform, you acknowledge that you do so at your own risk and accept full 
+              responsibility for safeguarding any personal data you submit or process through this test environment. 
+              The platform provider accepts no liability for any unauthorised access to, or disclosure of, data stored herein.
+            </p>
+          </AlertDescription>
+        </Alert>
 
         {/* Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab}>
