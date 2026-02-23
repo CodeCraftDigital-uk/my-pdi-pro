@@ -5,11 +5,12 @@ import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { X, Copy, Link2, Loader2 } from 'lucide-react';
+import { X, Copy, Link2, Loader2, Mail, Send } from 'lucide-react';
 import { useCreateCaptureRequest } from '@/hooks/useCaptureRequest';
 import { CAPTURE_STEPS, defaultRequiredSteps } from '@/types/capture';
 import type { RequiredSteps, CaptureRequest, CaptureStepKey } from '@/types/capture';
 import { toast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 
 interface CreateCaptureModalProps {
   onClose: () => void;
@@ -29,7 +30,8 @@ const CreateCaptureModal = ({ onClose, onCreated }: CreateCaptureModalProps) => 
   const [expiryPreset, setExpiryPreset] = useState('48h');
   const [requiredSteps, setRequiredSteps] = useState<RequiredSteps>(defaultRequiredSteps);
   const [createdRequest, setCreatedRequest] = useState<CaptureRequest | null>(null);
-
+  const [sendingEmail, setSendingEmail] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
   const toggleStep = (key: CaptureStepKey) => {
     setRequiredSteps(prev => ({ ...prev, [key]: !prev[key] }));
   };
@@ -74,6 +76,30 @@ const CreateCaptureModal = ({ onClose, onCreated }: CreateCaptureModalProps) => 
     ? `${window.location.origin}/capture/${createdRequest.token}`
     : '';
 
+  const handleSendEmail = async () => {
+    if (!createdRequest?.seller_email) return;
+    setSendingEmail(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('send-capture-link', {
+        body: {
+          sellerName: createdRequest.seller_name,
+          sellerEmail: createdRequest.seller_email,
+          captureUrl,
+          dealerName: createdRequest.dealer_name,
+          vehicleRef: createdRequest.vehicle_registration || createdRequest.vehicle_vin,
+          expiresAt: createdRequest.expires_at,
+        },
+      });
+      if (error) throw error;
+      setEmailSent(true);
+      toast({ title: 'Email sent', description: `Capture link sent to ${createdRequest.seller_email}` });
+    } catch (err: any) {
+      toast({ title: 'Failed to send email', description: err.message, variant: 'destructive' });
+    } finally {
+      setSendingEmail(false);
+    }
+  };
+
   const copyLink = () => {
     navigator.clipboard.writeText(captureUrl);
     toast({ title: 'Link copied to clipboard' });
@@ -111,6 +137,38 @@ const CreateCaptureModal = ({ onClose, onCreated }: CreateCaptureModalProps) => 
                 Send this link to <strong>{createdRequest.seller_name}</strong>. 
                 They can complete the capture on their mobile device without logging in.
               </p>
+
+              {/* Email send section */}
+              {createdRequest.seller_email ? (
+                <div className="border border-border rounded-xl p-4 space-y-3">
+                  <div className="flex items-center gap-2 text-sm font-medium text-foreground">
+                    <Mail size={16} className="text-muted-foreground" />
+                    Send link via email
+                  </div>
+                  {emailSent ? (
+                    <p className="text-sm text-emerald-600 dark:text-emerald-400 font-medium">
+                      ✓ Email sent to {createdRequest.seller_email}
+                    </p>
+                  ) : (
+                    <Button
+                      onClick={handleSendEmail}
+                      disabled={sendingEmail}
+                      variant="outline"
+                      className="w-full gap-2"
+                    >
+                      {sendingEmail ? (
+                        <><Loader2 size={14} className="animate-spin" /> Sending...</>
+                      ) : (
+                        <><Send size={14} /> Send to {createdRequest.seller_email}</>
+                      )}
+                    </Button>
+                  )}
+                </div>
+              ) : (
+                <p className="text-xs text-muted-foreground italic">
+                  No seller email provided — share the link manually.
+                </p>
+              )}
 
               <Button onClick={onClose} className="w-full" style={{ background: '#1e3a5f' }}>
                 Done
