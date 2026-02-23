@@ -122,7 +122,7 @@ const CaptureRequestCard = ({ request, onClick }: CaptureRequestCardProps) => {
               {sendingEmail ? (
                 <><Loader2 size={12} className="animate-spin" /> Sending...</>
               ) : (
-                <><Send size={12} /> {request.seller_email ? 'Resend Email' : 'Copy Link'}</>
+                <><Send size={12} /> {request.seller_email ? 'Send Email' : 'Copy Link'}</>
               )}
             </Button>
             <Button
