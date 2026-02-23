@@ -181,6 +181,38 @@ export function useUpdateCaptureStatus() {
   });
 }
 
+// ─── Delete capture request (cascading) ───
+export function useDeleteCaptureRequest() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (id: string) => {
+      // Delete related media files from storage first
+      const { data: mediaFiles } = await supabase
+        .from('capture_media')
+        .select('file_path')
+        .eq('capture_request_id', id);
+
+      if (mediaFiles && mediaFiles.length > 0) {
+        const paths = mediaFiles.map((m: any) => m.file_path);
+        await supabase.storage.from('capture-media').remove(paths);
+      }
+
+      // Delete related rows in order
+      await supabase.from('capture_media').delete().eq('capture_request_id', id);
+      await supabase.from('capture_notes').delete().eq('capture_request_id', id);
+      await supabase.from('capture_submissions').delete().eq('capture_request_id', id);
+      await supabase.from('capture_status_log').delete().eq('capture_request_id', id);
+
+      // Delete the request itself
+      const { error } = await supabase.from('capture_requests').delete().eq('id', id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['capture-requests'] });
+    },
+  });
+}
+
 // ─── Add note ───
 export function useAddCaptureNote() {
   const qc = useQueryClient();

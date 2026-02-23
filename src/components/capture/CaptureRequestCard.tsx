@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { formatDistanceToNow } from 'date-fns';
-import { Clock, CheckCircle2, AlertCircle, Archive, Car, User, Send, Loader2, Copy } from 'lucide-react';
+import { Clock, CheckCircle2, AlertCircle, Archive, Car, User, Send, Loader2, Copy, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
+import { useDeleteCaptureRequest } from '@/hooks/useCaptureRequest';
 import type { CaptureRequest } from '@/types/capture';
 
 interface CaptureRequestCardProps {
@@ -21,6 +23,7 @@ const statusConfig: Record<string, { label: string; className: string; icon: Rea
 
 const CaptureRequestCard = ({ request, onClick }: CaptureRequestCardProps) => {
   const [sendingEmail, setSendingEmail] = useState(false);
+  const deleteMutation = useDeleteCaptureRequest();
   const status = statusConfig[request.status] || statusConfig.pending;
   const isExpired = new Date(request.expires_at) < new Date() && request.status === 'pending';
   const vehicleRef = request.vehicle_registration || request.vehicle_vin || 'No vehicle ref';
@@ -62,6 +65,17 @@ const CaptureRequestCard = ({ request, onClick }: CaptureRequestCardProps) => {
     toast({ title: 'Link copied to clipboard' });
   };
 
+  const handleDelete = (e: React.MouseEvent) => {
+    e.stopPropagation();
+  };
+
+  const confirmDelete = () => {
+    deleteMutation.mutate(request.id, {
+      onSuccess: () => toast({ title: 'Deleted', description: 'Capture request has been permanently removed.' }),
+      onError: (err: any) => toast({ title: 'Delete failed', description: err.message, variant: 'destructive' }),
+    });
+  };
+
   return (
     <div
       onClick={onClick}
@@ -94,32 +108,61 @@ const CaptureRequestCard = ({ request, onClick }: CaptureRequestCardProps) => {
         <span>{isExpired ? 'Expired' : `Expires ${expiresIn}`}</span>
       </div>
 
-      {/* Action buttons for pending requests */}
-      {canResend && (
-        <div className="flex gap-2 pt-1">
-          <Button
-            onClick={handleResendEmail}
-            disabled={sendingEmail}
-            size="sm"
-            variant="outline"
-            className="gap-1.5 text-xs flex-1"
-          >
-            {sendingEmail ? (
-              <><Loader2 size={12} className="animate-spin" /> Sending...</>
-            ) : (
-              <><Send size={12} /> {request.seller_email ? 'Resend Email' : 'Copy Link'}</>
-            )}
-          </Button>
-          <Button
-            onClick={handleCopyLink}
-            size="sm"
-            variant="ghost"
-            className="gap-1.5 text-xs shrink-0"
-          >
-            <Copy size={12} /> Copy
-          </Button>
-        </div>
-      )}
+      {/* Action buttons */}
+      <div className="flex gap-2 pt-1">
+        {canResend && (
+          <>
+            <Button
+              onClick={handleResendEmail}
+              disabled={sendingEmail}
+              size="sm"
+              variant="outline"
+              className="gap-1.5 text-xs flex-1"
+            >
+              {sendingEmail ? (
+                <><Loader2 size={12} className="animate-spin" /> Sending...</>
+              ) : (
+                <><Send size={12} /> {request.seller_email ? 'Resend Email' : 'Copy Link'}</>
+              )}
+            </Button>
+            <Button
+              onClick={handleCopyLink}
+              size="sm"
+              variant="ghost"
+              className="gap-1.5 text-xs shrink-0"
+            >
+              <Copy size={12} /> Copy
+            </Button>
+          </>
+        )}
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button
+              onClick={handleDelete}
+              size="sm"
+              variant="ghost"
+              className="gap-1.5 text-xs shrink-0 text-destructive hover:text-destructive hover:bg-destructive/10"
+              disabled={deleteMutation.isPending}
+            >
+              {deleteMutation.isPending ? <Loader2 size={12} className="animate-spin" /> : <Trash2 size={12} />}
+            </Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent onClick={(e) => e.stopPropagation()}>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Delete capture request?</AlertDialogTitle>
+              <AlertDialogDescription>
+                This will permanently delete this capture request for <strong>{request.seller_name}</strong>, including all uploaded media, notes, and submissions. This action cannot be undone.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction onClick={confirmDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+                Delete
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      </div>
     </div>
   );
 };
