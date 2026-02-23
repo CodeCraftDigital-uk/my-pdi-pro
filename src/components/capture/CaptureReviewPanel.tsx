@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { ChevronLeft, Download, Send, MessageSquare, Clock, User, Car, CheckCircle2, AlertCircle, Archive, Loader2 } from 'lucide-react';
+import { ChevronLeft, Download, Send, MessageSquare, Clock, User, Car, CheckCircle2, AlertCircle, Archive, Loader2, Mail, Phone, Hash } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useCaptureMedia, useCaptureSubmission, useCaptureNotes, useAddCaptureNote, useUpdateCaptureStatus } from '@/hooks/useCaptureRequest';
 import { getMediaSignedUrl } from '@/hooks/useCaptureRequest';
@@ -125,6 +125,51 @@ const CaptureReviewPanel = ({ request, onBack }: CaptureReviewPanelProps) => {
                 <SelectItem value="archived">Archived</SelectItem>
               </SelectContent>
             </Select>
+          </div>
+
+          {/* Customer & Vehicle Details */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-muted/40 rounded-lg p-4 text-sm">
+            <div className="space-y-2">
+              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Customer Details</p>
+              <div className="space-y-1.5">
+                <div className="flex items-center gap-2 text-foreground">
+                  <User size={13} className="text-muted-foreground shrink-0" />
+                  <span>{request.seller_name}</span>
+                </div>
+                {request.seller_email && (
+                  <div className="flex items-center gap-2 text-foreground">
+                    <Mail size={13} className="text-muted-foreground shrink-0" />
+                    <span>{request.seller_email}</span>
+                  </div>
+                )}
+                {request.seller_phone && (
+                  <div className="flex items-center gap-2 text-foreground">
+                    <Phone size={13} className="text-muted-foreground shrink-0" />
+                    <span>{request.seller_phone}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="space-y-2">
+              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Vehicle Details</p>
+              <div className="space-y-1.5">
+                {request.vehicle_registration && (
+                  <div className="flex items-center gap-2 text-foreground">
+                    <Car size={13} className="text-muted-foreground shrink-0" />
+                    <span className="font-mono font-semibold">{request.vehicle_registration}</span>
+                  </div>
+                )}
+                {request.vehicle_vin && (
+                  <div className="flex items-center gap-2 text-foreground">
+                    <Hash size={13} className="text-muted-foreground shrink-0" />
+                    <span className="font-mono text-xs">{request.vehicle_vin}</span>
+                  </div>
+                )}
+                {!request.vehicle_registration && !request.vehicle_vin && (
+                  <p className="text-muted-foreground text-xs">No vehicle details provided</p>
+                )}
+              </div>
+            </div>
           </div>
 
           {/* Submission info */}
