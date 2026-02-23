@@ -14,7 +14,210 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      capture_media: {
+        Row: {
+          capture_request_id: string
+          file_path: string
+          file_size: number
+          file_type: string
+          id: string
+          step: string
+          submission_id: string | null
+          uploaded_at: string
+        }
+        Insert: {
+          capture_request_id: string
+          file_path: string
+          file_size?: number
+          file_type: string
+          id?: string
+          step: string
+          submission_id?: string | null
+          uploaded_at?: string
+        }
+        Update: {
+          capture_request_id?: string
+          file_path?: string
+          file_size?: number
+          file_type?: string
+          id?: string
+          step?: string
+          submission_id?: string | null
+          uploaded_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "capture_media_capture_request_id_fkey"
+            columns: ["capture_request_id"]
+            isOneToOne: false
+            referencedRelation: "capture_requests"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "capture_media_submission_id_fkey"
+            columns: ["submission_id"]
+            isOneToOne: false
+            referencedRelation: "capture_submissions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      capture_notes: {
+        Row: {
+          capture_request_id: string
+          created_at: string
+          id: string
+          note_text: string
+        }
+        Insert: {
+          capture_request_id: string
+          created_at?: string
+          id?: string
+          note_text: string
+        }
+        Update: {
+          capture_request_id?: string
+          created_at?: string
+          id?: string
+          note_text?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "capture_notes_capture_request_id_fkey"
+            columns: ["capture_request_id"]
+            isOneToOne: false
+            referencedRelation: "capture_requests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      capture_requests: {
+        Row: {
+          created_at: string
+          dealer_email: string | null
+          dealer_name: string | null
+          expires_at: string
+          id: string
+          internal_notes: string | null
+          required_steps: Json
+          seller_email: string | null
+          seller_name: string
+          seller_phone: string | null
+          status: Database["public"]["Enums"]["capture_status"]
+          token: string
+          vehicle_registration: string | null
+          vehicle_vin: string | null
+        }
+        Insert: {
+          created_at?: string
+          dealer_email?: string | null
+          dealer_name?: string | null
+          expires_at: string
+          id?: string
+          internal_notes?: string | null
+          required_steps?: Json
+          seller_email?: string | null
+          seller_name: string
+          seller_phone?: string | null
+          status?: Database["public"]["Enums"]["capture_status"]
+          token?: string
+          vehicle_registration?: string | null
+          vehicle_vin?: string | null
+        }
+        Update: {
+          created_at?: string
+          dealer_email?: string | null
+          dealer_name?: string | null
+          expires_at?: string
+          id?: string
+          internal_notes?: string | null
+          required_steps?: Json
+          seller_email?: string | null
+          seller_name?: string
+          seller_phone?: string | null
+          status?: Database["public"]["Enums"]["capture_status"]
+          token?: string
+          vehicle_registration?: string | null
+          vehicle_vin?: string | null
+        }
+        Relationships: []
+      }
+      capture_status_log: {
+        Row: {
+          capture_request_id: string
+          changed_at: string
+          id: string
+          new_status: Database["public"]["Enums"]["capture_status"]
+          old_status: Database["public"]["Enums"]["capture_status"] | null
+        }
+        Insert: {
+          capture_request_id: string
+          changed_at?: string
+          id?: string
+          new_status: Database["public"]["Enums"]["capture_status"]
+          old_status?: Database["public"]["Enums"]["capture_status"] | null
+        }
+        Update: {
+          capture_request_id?: string
+          changed_at?: string
+          id?: string
+          new_status?: Database["public"]["Enums"]["capture_status"]
+          old_status?: Database["public"]["Enums"]["capture_status"] | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "capture_status_log_capture_request_id_fkey"
+            columns: ["capture_request_id"]
+            isOneToOne: false
+            referencedRelation: "capture_requests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      capture_submissions: {
+        Row: {
+          capture_request_id: string
+          declaration_confirmed: boolean
+          declaration_name: string | null
+          device_type: string | null
+          id: string
+          ip_address: string | null
+          no_damage_confirmed: boolean
+          submitted_at: string
+          user_agent: string | null
+        }
+        Insert: {
+          capture_request_id: string
+          declaration_confirmed?: boolean
+          declaration_name?: string | null
+          device_type?: string | null
+          id?: string
+          ip_address?: string | null
+          no_damage_confirmed?: boolean
+          submitted_at?: string
+          user_agent?: string | null
+        }
+        Update: {
+          capture_request_id?: string
+          declaration_confirmed?: boolean
+          declaration_name?: string | null
+          device_type?: string | null
+          id?: string
+          ip_address?: string | null
+          no_damage_confirmed?: boolean
+          submitted_at?: string
+          user_agent?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "capture_submissions_capture_request_id_fkey"
+            columns: ["capture_request_id"]
+            isOneToOne: false
+            referencedRelation: "capture_requests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +226,12 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      capture_status:
+        | "pending"
+        | "in_progress"
+        | "completed"
+        | "expired"
+        | "archived"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +358,14 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      capture_status: [
+        "pending",
+        "in_progress",
+        "completed",
+        "expired",
+        "archived",
+      ],
+    },
   },
 } as const

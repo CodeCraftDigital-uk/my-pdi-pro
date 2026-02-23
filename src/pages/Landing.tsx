@@ -16,6 +16,7 @@ import {
   Gavel,
   Car,
   FileText,
+  Camera,
 } from 'lucide-react';
 import autoprovIcon from '@/assets/autoprov_icon.png';
 
@@ -61,6 +62,17 @@ const tools: ToolCard[] = [
     description: 'AI-powered complaint defence tool. Generate legally compliant, professionally worded responses to customer disputes. CRA 2015 aligned.',
     status: 'active',
     path: '/dispute-response',
+    accentClass: 'border-l-[#2d6aad]',
+    iconBgClass: 'bg-[#e8f0f9]',
+    iconColorClass: 'text-[#1e3a5f]',
+  },
+  {
+    id: 'remote-capture',
+    icon: <Camera size={28} />,
+    title: 'Remote Capture',
+    description: 'Generate secure inspection links for sellers. Capture structured vehicle photos, damage disclosure, and walkaround video remotely.',
+    status: 'active',
+    path: '/remote-capture',
     accentClass: 'border-l-[#2d6aad]',
     iconBgClass: 'bg-[#e8f0f9]',
     iconColorClass: 'text-[#1e3a5f]',

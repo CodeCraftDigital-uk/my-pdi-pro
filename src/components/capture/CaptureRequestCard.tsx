@@ -1,0 +1,59 @@
+import { formatDistanceToNow } from 'date-fns';
+import { Clock, CheckCircle2, AlertCircle, Archive, Car, User } from 'lucide-react';
+import type { CaptureRequest } from '@/types/capture';
+
+interface CaptureRequestCardProps {
+  request: CaptureRequest;
+  onClick: () => void;
+}
+
+const statusConfig: Record<string, { label: string; className: string; icon: React.ReactNode }> = {
+  pending: { label: 'Pending', className: 'bg-amber-100 text-amber-700', icon: <Clock size={10} /> },
+  in_progress: { label: 'In Progress', className: 'bg-blue-100 text-blue-700', icon: <Clock size={10} /> },
+  completed: { label: 'Completed', className: 'bg-emerald-100 text-emerald-700', icon: <CheckCircle2 size={10} /> },
+  expired: { label: 'Expired', className: 'bg-red-100 text-red-700', icon: <AlertCircle size={10} /> },
+  archived: { label: 'Archived', className: 'bg-slate-100 text-slate-600', icon: <Archive size={10} /> },
+};
+
+const CaptureRequestCard = ({ request, onClick }: CaptureRequestCardProps) => {
+  const status = statusConfig[request.status] || statusConfig.pending;
+  const isExpired = new Date(request.expires_at) < new Date() && request.status === 'pending';
+  const vehicleRef = request.vehicle_registration || request.vehicle_vin || 'No vehicle ref';
+  const expiresIn = formatDistanceToNow(new Date(request.expires_at), { addSuffix: true });
+
+  return (
+    <div
+      onClick={onClick}
+      className="bg-card rounded-xl border border-border shadow-sm p-5 cursor-pointer hover:shadow-md hover:border-border/80 transition-all duration-200 flex flex-col gap-3"
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => { if (e.key === 'Enter') onClick(); }}
+    >
+      {/* Header row */}
+      <div className="flex items-start justify-between gap-2">
+        <div className="flex items-center gap-2 min-w-0">
+          <User size={14} className="text-muted-foreground shrink-0" />
+          <span className="font-semibold text-foreground text-sm truncate">{request.seller_name}</span>
+        </div>
+        <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold shrink-0 ${isExpired ? statusConfig.expired.className : status.className}`}>
+          {isExpired ? statusConfig.expired.icon : status.icon}
+          {isExpired ? 'Expired' : status.label}
+        </span>
+      </div>
+
+      {/* Vehicle ref */}
+      <div className="flex items-center gap-2 text-xs text-muted-foreground">
+        <Car size={12} />
+        <span>{vehicleRef}</span>
+      </div>
+
+      {/* Expiry */}
+      <div className="flex items-center gap-2 text-xs text-muted-foreground">
+        <Clock size={12} />
+        <span>{isExpired ? 'Expired' : `Expires ${expiresIn}`}</span>
+      </div>
+    </div>
+  );
+};
+
+export default CaptureRequestCard;
