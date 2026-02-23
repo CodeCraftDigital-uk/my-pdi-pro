@@ -1,5 +1,9 @@
+import { useState } from 'react';
 import { formatDistanceToNow } from 'date-fns';
-import { Clock, CheckCircle2, AlertCircle, Archive, Car, User } from 'lucide-react';
+import { Clock, CheckCircle2, AlertCircle, Archive, Car, User, Send, Loader2, Copy } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from '@/hooks/use-toast';
 import type { CaptureRequest } from '@/types/capture';
 
 interface CaptureRequestCardProps {
@@ -16,10 +20,47 @@ const statusConfig: Record<string, { label: string; className: string; icon: Rea
 };
 
 const CaptureRequestCard = ({ request, onClick }: CaptureRequestCardProps) => {
+  const [sendingEmail, setSendingEmail] = useState(false);
   const status = statusConfig[request.status] || statusConfig.pending;
   const isExpired = new Date(request.expires_at) < new Date() && request.status === 'pending';
   const vehicleRef = request.vehicle_registration || request.vehicle_vin || 'No vehicle ref';
   const expiresIn = formatDistanceToNow(new Date(request.expires_at), { addSuffix: true });
+  const captureUrl = `${window.location.origin}/capture/${request.token}`;
+  const canResend = request.status === 'pending' && !isExpired;
+
+  const handleResendEmail = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!request.seller_email) {
+      navigator.clipboard.writeText(captureUrl);
+      toast({ title: 'Link copied', description: 'No email on file — link copied to clipboard instead.' });
+      return;
+    }
+    setSendingEmail(true);
+    try {
+      const { error } = await supabase.functions.invoke('send-capture-link', {
+        body: {
+          sellerName: request.seller_name,
+          sellerEmail: request.seller_email,
+          captureUrl,
+          dealerName: request.dealer_name,
+          vehicleRef: request.vehicle_registration || request.vehicle_vin,
+          expiresAt: request.expires_at,
+        },
+      });
+      if (error) throw error;
+      toast({ title: 'Email resent', description: `Capture link sent to ${request.seller_email}` });
+    } catch (err: any) {
+      toast({ title: 'Failed to send', description: err.message, variant: 'destructive' });
+    } finally {
+      setSendingEmail(false);
+    }
+  };
+
+  const handleCopyLink = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    navigator.clipboard.writeText(captureUrl);
+    toast({ title: 'Link copied to clipboard' });
+  };
 
   return (
     <div
@@ -52,6 +93,33 @@ const CaptureRequestCard = ({ request, onClick }: CaptureRequestCardProps) => {
         <Clock size={12} />
         <span>{isExpired ? 'Expired' : `Expires ${expiresIn}`}</span>
       </div>
+
+      {/* Action buttons for pending requests */}
+      {canResend && (
+        <div className="flex gap-2 pt-1">
+          <Button
+            onClick={handleResendEmail}
+            disabled={sendingEmail}
+            size="sm"
+            variant="outline"
+            className="gap-1.5 text-xs flex-1"
+          >
+            {sendingEmail ? (
+              <><Loader2 size={12} className="animate-spin" /> Sending...</>
+            ) : (
+              <><Send size={12} /> {request.seller_email ? 'Resend Email' : 'Copy Link'}</>
+            )}
+          </Button>
+          <Button
+            onClick={handleCopyLink}
+            size="sm"
+            variant="ghost"
+            className="gap-1.5 text-xs shrink-0"
+          >
+            <Copy size={12} /> Copy
+          </Button>
+        </div>
+      )}
     </div>
   );
 };
