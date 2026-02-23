@@ -16,10 +16,29 @@ const RISK_CONFIG = {
   high: { label: '🔴 High Legal Exposure', color: 'bg-red-100 text-red-800 border-red-300' },
 };
 
+const textToHtml = (text: string): string => {
+  return text
+    .split('\n\n')
+    .map((para) => `<p style="margin:0 0 12px 0;font-family:Arial,sans-serif;font-size:14px;line-height:1.5;">${para.replace(/\n/g, '<br>')}</p>`)
+    .join('');
+};
+
 const CopyButton = ({ text }: { text: string }) => {
   const [copied, setCopied] = useState(false);
   const handleCopy = async () => {
-    await navigator.clipboard.writeText(text);
+    try {
+      const html = textToHtml(text);
+      const blob = new Blob([html], { type: 'text/html' });
+      const textBlob = new Blob([text], { type: 'text/plain' });
+      await navigator.clipboard.write([
+        new ClipboardItem({
+          'text/html': blob,
+          'text/plain': textBlob,
+        }),
+      ]);
+    } catch {
+      await navigator.clipboard.writeText(text);
+    }
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
