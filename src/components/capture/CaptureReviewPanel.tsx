@@ -1,11 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { ChevronLeft, Download, Send, MessageSquare, Clock, User, Car, CheckCircle2, AlertCircle, Archive, Loader2, Mail, Phone, Hash } from 'lucide-react';
+import { ChevronLeft, Download, Send, MessageSquare, Clock, User, Car, CheckCircle2, AlertCircle, Archive, Loader2, Mail, Phone, Hash, Printer } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useCaptureMedia, useCaptureSubmission, useCaptureNotes, useAddCaptureNote, useUpdateCaptureStatus } from '@/hooks/useCaptureRequest';
 import { getMediaSignedUrl } from '@/hooks/useCaptureRequest';
 import { toast } from '@/hooks/use-toast';
+import autoprovIcon from '@/assets/autoprov_icon.png';
 import type { CaptureRequest, CaptureMedia } from '@/types/capture';
 
 interface CaptureReviewPanelProps {
@@ -89,13 +90,20 @@ const CaptureReviewPanel = ({ request, onBack }: CaptureReviewPanelProps) => {
 
   const vehicleRef = request.vehicle_registration || request.vehicle_vin || 'No vehicle ref';
 
+  const handlePrint = () => window.print();
+
   return (
-    <div className="min-h-screen bg-background">
+    <>
+    <div className="min-h-screen bg-background print:hidden">
       <div className="sticky top-0 z-40 bg-background/95 backdrop-blur border-b border-border shadow-sm">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 py-2.5 flex items-center gap-4">
           <button onClick={onBack} className="flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors">
             <ChevronLeft className="h-3.5 w-3.5" /> Back to Dashboard
           </button>
+          <div className="flex-1" />
+          <Button onClick={handlePrint} size="sm" variant="outline" className="gap-2 text-xs" disabled={loadingUrls}>
+            <Printer size={14} /> Print / Save PDF
+          </Button>
         </div>
       </div>
 
@@ -270,6 +278,89 @@ const CaptureReviewPanel = ({ request, onBack }: CaptureReviewPanelProps) => {
         </div>
       </div>
     </div>
+
+    {/* ── PRINT-ONLY LAYOUT ── */}
+    <div className="hidden print:block capture-print-root">
+      {/* Print Header */}
+      <div className="capture-print-header">
+        <div>
+          <div style={{ fontSize: '14pt', fontWeight: 800, color: '#1a3558' }}>
+            Remote Appraisal Report
+          </div>
+          <div style={{ fontSize: '8pt', color: '#666', marginTop: '2pt' }}>
+            Generated {new Date().toLocaleDateString('en-GB')} · Ref: {request.id.slice(0, 8).toUpperCase()}
+          </div>
+        </div>
+        <div style={{ textAlign: 'right', display: 'flex', alignItems: 'center', gap: '4pt' }}>
+          <div>
+            <div style={{ fontSize: '7pt', color: '#999' }}>Generated using the AutoProv Platform</div>
+          </div>
+          <img src={autoprovIcon} alt="AutoProv" style={{ width: '28pt', height: '28pt', objectFit: 'contain' }} />
+        </div>
+      </div>
+
+      {/* Customer & Vehicle info */}
+      <div className="capture-print-details">
+        <div className="capture-print-detail-col">
+          <div className="capture-print-detail-heading">Customer Details</div>
+          <div className="capture-print-detail-row"><span className="capture-print-label">Name:</span> {request.seller_name}</div>
+          {request.seller_email && <div className="capture-print-detail-row"><span className="capture-print-label">Email:</span> {request.seller_email}</div>}
+          {request.seller_phone && <div className="capture-print-detail-row"><span className="capture-print-label">Phone:</span> {request.seller_phone}</div>}
+        </div>
+        <div className="capture-print-detail-col">
+          <div className="capture-print-detail-heading">Vehicle Details</div>
+          {request.vehicle_registration && <div className="capture-print-detail-row"><span className="capture-print-label">Registration:</span> <span style={{ fontFamily: 'monospace', fontWeight: 700 }}>{request.vehicle_registration}</span></div>}
+          {request.vehicle_vin && <div className="capture-print-detail-row"><span className="capture-print-label">VIN:</span> <span style={{ fontFamily: 'monospace', fontSize: '8pt' }}>{request.vehicle_vin}</span></div>}
+          <div className="capture-print-detail-row"><span className="capture-print-label">Status:</span> {request.status.replace('_', ' ').toUpperCase()}</div>
+          <div className="capture-print-detail-row"><span className="capture-print-label">Created:</span> {new Date(request.created_at).toLocaleDateString('en-GB')}</div>
+        </div>
+      </div>
+
+      {/* Submission */}
+      {submission && (
+        <div className="capture-print-submission">
+          <strong>Seller Declaration:</strong> Submitted by {submission.declaration_name} on {new Date(submission.submitted_at).toLocaleString('en-GB')} · {submission.device_type} · {submission.no_damage_confirmed ? 'No damage declared' : 'Damage photos included'}
+        </div>
+      )}
+
+      {/* Media sections */}
+      {MEDIA_SECTIONS.map(section => {
+        const sectionMedia = media.filter(m => m.step.startsWith(section.prefix));
+        if (sectionMedia.length === 0) return null;
+        return (
+          <div key={section.prefix} className="capture-print-media-section">
+            <div className="capture-print-media-heading">{section.label}</div>
+            <div className="capture-print-media-grid">
+              {sectionMedia.filter(m => m.file_type !== 'video').map(m => (
+                <div key={m.id} className="capture-print-media-item">
+                  <img src={mediaUrls[m.id]} alt={m.step} />
+                  <span className="capture-print-media-label">{m.step.replace(section.prefix, '').replace(/_/g, ' ')}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+      })}
+
+      {/* Notes */}
+      {notes.length > 0 && (
+        <div className="capture-print-notes">
+          <div className="capture-print-media-heading">Internal Notes</div>
+          {notes.map(note => (
+            <div key={note.id} className="capture-print-note-item">
+              <span>{note.note_text}</span>
+              <span className="capture-print-note-date">{new Date(note.created_at).toLocaleString('en-GB')}</span>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Footer disclaimer */}
+      <div className="capture-print-footer">
+        This report was generated using the AutoProv Platform (autexa.ai). The content of this report is the responsibility of the issuing business.
+      </div>
+    </div>
+    </>
   );
 };
 
