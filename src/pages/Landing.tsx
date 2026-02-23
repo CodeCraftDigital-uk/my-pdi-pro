@@ -98,7 +98,7 @@ const trustItems = [
 const faqs = [
   {
     q: 'What are the AutoProv Compliance Tools?',
-    a: 'The AutoProv Compliance Tools are a suite of free, standalone digital tools built for UK used car dealers and motor trade professionals. They cover three core compliance areas: Pre-Delivery Inspection (PDI) reporting, Distance Sale Pack generation, and AI-powered Dispute Response drafting. These tools are part of the wider AutoProv platform — a broad automotive management and operations platform currently in development — and will be fully integrated into AutoProv when it launches.',
+    a: 'The AutoProv Compliance Tools are a suite of free, standalone digital tools built for UK used car dealers and motor trade professionals. They cover four core areas: Pre-Delivery Inspection (PDI) reporting, Distance Sale Pack generation, AI-powered Dispute Response drafting, and Remote Vehicle Capture for structured appraisals. These tools are part of the wider AutoProv platform — a broad automotive management and operations platform currently in development — and will be fully integrated into AutoProv when it launches.',
   },
   {
     q: 'What is AutoProv?',
@@ -117,12 +117,16 @@ const faqs = [
     a: 'The AI Dispute Response Builder guides dealers through a 7-step process: entering sale details, recording time and usage since sale, describing the customer\'s complaint, logging supporting evidence (PDI report, service history, DVLA data), and then generating a professional, legally-referenced response letter using Google Gemini AI. The letter references relevant sections of the Consumer Rights Act 2015, the 6-month burden of proof rule, and applicable case law.',
   },
   {
+    q: 'What is the Remote Capture tool and how does it help dealers?',
+    a: 'The Remote Capture tool allows dealers to send a secure inspection link to a seller or customer via email. The recipient uses their phone to complete a structured vehicle appraisal — capturing exterior, interior, damage, tyre, VIN, and walkaround video — along with a formal seller declaration. The dealer receives a full media pack and printable appraisal report, enabling remote vehicle sourcing and appraisal without physically attending the vehicle.',
+  },
+  {
     q: 'What consumer law applies to used car sales in the UK?',
     a: 'The primary legislation is the Consumer Rights Act 2015 (CRA 2015), which requires goods — including used cars — to be of satisfactory quality, fit for purpose, and as described. Buyers have a 30-day short-term right to reject faulty vehicles. Within the first 6 months of purchase, faults are presumed to have existed at the point of sale unless the dealer can prove otherwise. For remote or online sales, the Consumer Contracts Regulations 2013 (CCR 2013) additionally grant consumers a 14-day right to cancel.',
   },
   {
     q: 'Are the AutoProv Compliance Tools free to use?',
-    a: 'Yes. The three AutoProv Compliance Tools — the PDI Report, Distance Sale Pack generator, and AI Dispute Response Builder — are all free to use for UK used car dealers and motor trade professionals. No account registration is required. These tools are provided as a standalone compliance resource ahead of the full AutoProv platform launch.',
+    a: 'Yes. The AutoProv Compliance Tools — the PDI Report, Distance Sale Pack generator, AI Dispute Response Builder, and Remote Capture tool — are all free to use for UK used car dealers and motor trade professionals. No account registration is required. These tools are provided as a standalone compliance resource ahead of the full AutoProv platform launch.',
   },
 ];
 
@@ -330,7 +334,7 @@ const Landing = () => {
               AutoProv Compliance Tools for UK Used Car Dealers
             </h2>
             <p className="text-slate-600 text-base leading-relaxed mb-4">
-              These are the <strong>AutoProv Compliance Tools</strong> — a suite of free digital compliance resources built specifically for UK used car dealers and motor trade professionals. They help dealers meet their legal obligations under the <strong>Consumer Rights Act 2015 (CRA 2015)</strong> and the <strong>Consumer Contracts Regulations 2013 (CCR 2013)</strong>, with no account required.
+              These are the <strong>AutoProv Compliance Tools</strong> — a suite of free digital compliance and appraisal resources built specifically for UK used car dealers and motor trade professionals. They help dealers meet their legal obligations under the <strong>Consumer Rights Act 2015 (CRA 2015)</strong> and the <strong>Consumer Contracts Regulations 2013 (CCR 2013)</strong>, and enable <strong>remote vehicle appraisal and media capture</strong> — all with no account required.
             </p>
             <p className="text-slate-500 text-sm leading-relaxed border border-slate-200 rounded-xl px-5 py-4 bg-slate-50">
               <strong className="text-slate-700">Note:</strong> These compliance tools are part of <strong>AutoProv</strong> — a broader automotive platform covering far more than compliance. The tools on this site are being made available as a free, standalone resource ahead of the full AutoProv platform launch.
@@ -340,9 +344,9 @@ const Landing = () => {
           {/* ── Tool Descriptions ── */}
           <div>
             <h3 className="text-xl font-bold text-slate-800 mb-6 text-center">
-              Three Compliance Tools. Free to Use.
+              Four Compliance & Appraisal Tools. Free to Use.
             </h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
               <article className="bg-slate-50 rounded-xl border border-slate-200 p-6">
                 <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-4" style={{ background: '#e8f0f9', color: '#1e3a5f' }}>
@@ -371,6 +375,16 @@ const Landing = () => {
                 <h4 className="text-base font-bold text-slate-800 mb-2">AI Dispute Response Builder</h4>
                 <p className="text-sm text-slate-600 leading-relaxed">
                   An <strong>AI-powered tool for used car dealers</strong> facing customer complaints. Enter the sale details, complaint description, and supporting evidence, and the AI generates a professional, legally-referenced dispute response letter. References <strong>CRA 2015 sections</strong>, the 6-month burden of proof rule, and relevant case law — helping independent dealers compete without in-house legal teams.
+                </p>
+              </article>
+
+              <article className="bg-slate-50 rounded-xl border border-slate-200 p-6">
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-4" style={{ background: '#e8f0f9', color: '#1e3a5f' }}>
+                  <Camera size={20} />
+                </div>
+                <h4 className="text-base font-bold text-slate-800 mb-2">Remote Vehicle Capture</h4>
+                <p className="text-sm text-slate-600 leading-relaxed">
+                  A <strong>remote vehicle appraisal and media capture</strong> tool for UK car dealers sourcing vehicles at a distance. Generate a secure, time-limited inspection link and send it to any seller via email. The seller completes a structured, mobile-first capture process — <strong>exterior photos, interior shots, damage disclosure, tyre images, VIN plate, dashboard, service history, and a walkaround video</strong> — along with a formal seller declaration. The dealer receives a complete appraisal report with all media, downloadable as a PDF. Ideal for <strong>remote vehicle sourcing, part-exchange appraisals, and wholesale buying</strong> without attending the vehicle in person.
                 </p>
               </article>
             </div>
