@@ -7,7 +7,7 @@
   <!-- Home / Landing Page -->
   <url>
     <loc>https://my-pdi-pro.lovable.app/</loc>
-    <lastmod>2026-02-20</lastmod>
+    <lastmod>2026-02-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -15,7 +15,7 @@
   <!-- Used Vehicle PDI Tool -->
   <url>
     <loc>https://my-pdi-pro.lovable.app/pdi</loc>
-    <lastmod>2026-02-20</lastmod>
+    <lastmod>2026-02-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -23,7 +23,7 @@
   <!-- Digital Distance Sale Pack Generator -->
   <url>
     <loc>https://my-pdi-pro.lovable.app/distance-sale</loc>
-    <lastmod>2026-02-20</lastmod>
+    <lastmod>2026-02-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -31,7 +31,15 @@
   <!-- AI Dispute Response Builder -->
   <url>
     <loc>https://my-pdi-pro.lovable.app/dispute-response</loc>
-    <lastmod>2026-02-20</lastmod>
+    <lastmod>2026-02-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Remote Vehicle Capture -->
+  <url>
+    <loc>https://my-pdi-pro.lovable.app/remote-capture</loc>
+    <lastmod>2026-02-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
