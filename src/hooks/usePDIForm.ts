@@ -1,5 +1,7 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { VehicleDetailsData, Damage, TyreMeasurement, BrakeMeasurement, HandoverData } from '@/types/pdi';
+
+const AUTOSAVE_KEY = 'autoprov_pdi_autosave';
 
 const generateReportId = () => {
   const d = new Date();
@@ -8,51 +10,102 @@ const generateReportId = () => {
   return `PDI-${dateStr}-${rand}`;
 };
 
+const defaultVehicleDetails: VehicleDetailsData = {
+  make: '', model: '', variant: '', registration: '', vin: '',
+  mileagePDI: '', mileageHandover: '', fuelType: '', transmission: '',
+  engineSize: '', datePDI: undefined, dateHandover: undefined,
+  technicianName: '', salesExecutive: '', dealershipName: '',
+};
+
+const defaultTyres: TyreMeasurement[] = [
+  { position: 'Front Left (FL)', treadDepth: '' },
+  { position: 'Front Right (FR)', treadDepth: '' },
+  { position: 'Rear Left (RL)', treadDepth: '' },
+  { position: 'Rear Right (RR)', treadDepth: '' },
+  { position: 'Spare (if fitted)', treadDepth: '' },
+];
+
+const defaultBrakes: BrakeMeasurement[] = [
+  { component: 'Front Left Disc', measured: '', minimum: '' },
+  { component: 'Front Right Disc', measured: '', minimum: '' },
+  { component: 'Rear Left Disc', measured: '', minimum: '' },
+  { component: 'Rear Right Disc', measured: '', minimum: '' },
+  { component: 'Front Pads', measured: '', minimum: '' },
+  { component: 'Rear Pads', measured: '', minimum: '' },
+];
+
+const defaultHandover: HandoverData = {
+  vehicleInspected: false, cosmeticAccepted: false, mileageConfirmed: false,
+  keysReceived: '', v5cPresent: false, serviceHistoryPresent: false,
+  serviceHistoryType: '', motExpiryDate: '', documentationReceived: false,
+  customerName: '', salesRepName: '',
+  customerSignature: '', salesRepSignature: '',
+};
+
+function loadSaved() {
+  try {
+    const raw = localStorage.getItem(AUTOSAVE_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch { /* ignore */ }
+  return null;
+}
+
 export const usePDIForm = () => {
-  const [reportId] = useState(generateReportId);
-  const [reportDate] = useState(new Date());
+  const saved = useRef(loadSaved());
+
+  const [reportId] = useState(() => saved.current?.reportId || generateReportId());
+  const [reportDate] = useState(() => saved.current?.reportDate ? new Date(saved.current.reportDate) : new Date());
   const [logo, setLogo] = useState<string | null>(null);
 
-  const [vehicleDetails, setVehicleDetails] = useState<VehicleDetailsData>({
-    make: '', model: '', variant: '', registration: '', vin: '',
-    mileagePDI: '', mileageHandover: '', fuelType: '', transmission: '',
-    engineSize: '', datePDI: undefined, dateHandover: undefined,
-    technicianName: '', salesExecutive: '', dealershipName: '',
-  });
+  const [vehicleDetails, setVehicleDetails] = useState<VehicleDetailsData>(
+    () => saved.current?.vehicleDetails || { ...defaultVehicleDetails }
+  );
 
-  const [damages, setDamages] = useState<Damage[]>([]);
-  const [damageNotes, setDamageNotes] = useState('');
+  const [damages, setDamages] = useState<Damage[]>(() => saved.current?.damages || []);
+  const [damageNotes, setDamageNotes] = useState(() => saved.current?.damageNotes || '');
 
-  const [tyreMeasurements, setTyreMeasurements] = useState<TyreMeasurement[]>([
-    { position: 'Front Left (FL)', treadDepth: '' },
-    { position: 'Front Right (FR)', treadDepth: '' },
-    { position: 'Rear Left (RL)', treadDepth: '' },
-    { position: 'Rear Right (RR)', treadDepth: '' },
-    { position: 'Spare (if fitted)', treadDepth: '' },
+  const [tyreMeasurements, setTyreMeasurements] = useState<TyreMeasurement[]>(
+    () => saved.current?.tyreMeasurements || [...defaultTyres]
+  );
+
+  const [brakeMeasurements, setBrakeMeasurements] = useState<BrakeMeasurement[]>(
+    () => saved.current?.brakeMeasurements || [...defaultBrakes]
+  );
+
+  const [mechanicalChecks, setMechanicalChecks] = useState<Record<string, boolean>>(
+    () => saved.current?.mechanicalChecks || {}
+  );
+  const [mechanicalNotes, setMechanicalNotes] = useState(() => saved.current?.mechanicalNotes || '');
+  const [craChecks, setCraChecks] = useState<Record<string, boolean>>(
+    () => saved.current?.craChecks || {}
+  );
+  const [craConfirmed, setCraConfirmed] = useState(() => saved.current?.craConfirmed || false);
+  const [tcAccepted, setTcAccepted] = useState(() => saved.current?.tcAccepted || false);
+
+  const [handover, setHandover] = useState<HandoverData>(
+    () => saved.current?.handover || { ...defaultHandover }
+  );
+
+  // Autosave effect
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      try {
+        localStorage.setItem(AUTOSAVE_KEY, JSON.stringify({
+          reportId, reportDate,
+          vehicleDetails, damages, damageNotes,
+          tyreMeasurements, brakeMeasurements,
+          mechanicalChecks, mechanicalNotes,
+          craChecks, craConfirmed, tcAccepted, handover,
+        }));
+      } catch { /* quota exceeded */ }
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [
+    reportId, reportDate, vehicleDetails, damages, damageNotes,
+    tyreMeasurements, brakeMeasurements,
+    mechanicalChecks, mechanicalNotes,
+    craChecks, craConfirmed, tcAccepted, handover,
   ]);
-
-  const [brakeMeasurements, setBrakeMeasurements] = useState<BrakeMeasurement[]>([
-    { component: 'Front Left Disc', measured: '', minimum: '' },
-    { component: 'Front Right Disc', measured: '', minimum: '' },
-    { component: 'Rear Left Disc', measured: '', minimum: '' },
-    { component: 'Rear Right Disc', measured: '', minimum: '' },
-    { component: 'Front Pads', measured: '', minimum: '' },
-    { component: 'Rear Pads', measured: '', minimum: '' },
-  ]);
-
-  const [mechanicalChecks, setMechanicalChecks] = useState<Record<string, boolean>>({});
-  const [mechanicalNotes, setMechanicalNotes] = useState('');
-  const [craChecks, setCraChecks] = useState<Record<string, boolean>>({});
-  const [craConfirmed, setCraConfirmed] = useState(false);
-  const [tcAccepted, setTcAccepted] = useState(false);
-
-  const [handover, setHandover] = useState<HandoverData>({
-    vehicleInspected: false, cosmeticAccepted: false, mileageConfirmed: false,
-    keysReceived: '', v5cPresent: false, serviceHistoryPresent: false,
-    serviceHistoryType: '', motExpiryDate: '', documentationReceived: false,
-    customerName: '', salesRepName: '',
-    customerSignature: '', salesRepSignature: '',
-  });
 
   const addDamage = useCallback((damage: Omit<Damage, 'id'>) => {
     setDamages(prev => [...prev, { ...damage, id: crypto.randomUUID() }]);
@@ -86,6 +139,12 @@ export const usePDIForm = () => {
     setHandover(prev => ({ ...prev, [field]: value }));
   }, []);
 
+  const resetForm = useCallback(() => {
+    localStorage.removeItem(AUTOSAVE_KEY);
+    // Force page reload to get fresh state with new IDs
+    window.location.reload();
+  }, []);
+
   const validate = useCallback((): string[] => {
     const errors: string[] = [];
     if (!vehicleDetails.make) errors.push('Vehicle make is required');
@@ -113,6 +172,6 @@ export const usePDIForm = () => {
     craChecks, toggleCRA, craConfirmed, setCraConfirmed,
     tcAccepted, setTcAccepted,
     handover, updateHandover,
-    validate,
+    validate, resetForm,
   };
 };

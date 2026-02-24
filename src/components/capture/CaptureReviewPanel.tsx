@@ -41,10 +41,16 @@ const CaptureReviewPanel = ({ request, onBack }: CaptureReviewPanelProps) => {
     let cancelled = false;
     const loadUrls = async () => {
       const urls: Record<string, string> = {};
-      for (const m of media) {
-        try {
-          urls[m.id] = await getMediaSignedUrl(m.file_path);
-        } catch { /* skip */ }
+      const results = await Promise.allSettled(
+        media.map(async (m) => {
+          const url = await getMediaSignedUrl(m.file_path);
+          return { id: m.id, url };
+        })
+      );
+      for (const result of results) {
+        if (result.status === 'fulfilled') {
+          urls[result.value.id] = result.value.url;
+        }
       }
       if (!cancelled) {
         setMediaUrls(urls);
@@ -327,17 +333,24 @@ const CaptureReviewPanel = ({ request, onBack }: CaptureReviewPanelProps) => {
       {MEDIA_SECTIONS.map(section => {
         const sectionMedia = media.filter(m => m.step.startsWith(section.prefix));
         if (sectionMedia.length === 0) return null;
+        const printableMedia = sectionMedia.filter(m => m.file_type !== 'video');
+        const videoCount = sectionMedia.filter(m => m.file_type === 'video').length;
         return (
           <div key={section.prefix} className="capture-print-media-section">
             <div className="capture-print-media-heading">{section.label}</div>
             <div className="capture-print-media-grid">
-              {sectionMedia.filter(m => m.file_type !== 'video').map(m => (
+              {printableMedia.map(m => (
                 <div key={m.id} className="capture-print-media-item">
                   <img src={mediaUrls[m.id]} alt={m.step} />
                   <span className="capture-print-media-label">{m.step.replace(section.prefix, '').replace(/_/g, ' ')}</span>
                 </div>
               ))}
             </div>
+            {videoCount > 0 && (
+              <div style={{ fontSize: '8pt', color: '#666', marginTop: '4pt', fontStyle: 'italic' }}>
+                {videoCount} walkaround video{videoCount > 1 ? 's' : ''} captured — view in dashboard
+              </div>
+            )}
           </div>
         );
       })}

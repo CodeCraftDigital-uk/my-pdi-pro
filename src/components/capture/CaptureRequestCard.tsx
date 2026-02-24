@@ -51,7 +51,7 @@ const CaptureRequestCard = ({ request, onClick }: CaptureRequestCardProps) => {
         },
       });
       if (error) throw error;
-      toast({ title: 'Email resent', description: `Capture link sent to ${request.seller_email}` });
+      toast({ title: 'Email sent', description: `Capture link sent to ${request.seller_email}` });
     } catch (err: any) {
       toast({ title: 'Failed to send', description: err.message, variant: 'destructive' });
     } finally {

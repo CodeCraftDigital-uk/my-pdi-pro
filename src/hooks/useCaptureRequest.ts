@@ -27,6 +27,7 @@ export function useCaptureRequests(statusFilter?: CaptureStatus | 'all') {
       if (error) throw error;
       return data as unknown as CaptureRequest[];
     },
+    refetchInterval: 30000, // Auto-refresh every 30 seconds
   });
 }
 
