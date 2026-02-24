@@ -93,7 +93,7 @@ export const VehicleDiagram = ({ damages, damageNotes, onAddDamage, onRemoveDama
   return (
     <section className="pdi-section pdi-section-card pdi-accent-amber">
       <div className="pdi-section-header">
-        <span className="pdi-section-number pdi-num-amber">3</span>
+        <span className="pdi-section-number pdi-num-amber">2</span>
         <Paintbrush className="h-5 w-5 text-amber-600" />
         <h2 className="pdi-section-title">Cosmetic Condition</h2>
       </div>

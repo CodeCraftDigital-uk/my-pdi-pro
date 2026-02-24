@@ -75,7 +75,7 @@ export const VehicleDetails = ({ data, onUpdate }: Props) => {
   return (
     <section className="pdi-section pdi-section-card pdi-accent-blue">
       <div className="pdi-section-header">
-        <span className="pdi-section-number pdi-num-blue">2</span>
+        <span className="pdi-section-number pdi-num-blue">1</span>
         <Car className="h-5 w-5 text-blue-600" />
         <h2 className="pdi-section-title">Vehicle Details</h2>
       </div>
