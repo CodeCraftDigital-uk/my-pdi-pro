@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
-import { VehicleDetailsData, Damage, TyreMeasurement, BrakeMeasurement, HandoverData } from '@/types/pdi';
+import { VehicleDetailsData, Damage, TyreMeasurement, HandoverData } from '@/types/pdi';
 
 const AUTOSAVE_KEY = 'autoprov_pdi_autosave';
 
@@ -25,14 +25,6 @@ const defaultTyres: TyreMeasurement[] = [
   { position: 'Spare (if fitted)', treadDepth: '' },
 ];
 
-const defaultBrakes: BrakeMeasurement[] = [
-  { component: 'Front Left Disc', measured: '', minimum: '' },
-  { component: 'Front Right Disc', measured: '', minimum: '' },
-  { component: 'Rear Left Disc', measured: '', minimum: '' },
-  { component: 'Rear Right Disc', measured: '', minimum: '' },
-  { component: 'Front Pads', measured: '', minimum: '' },
-  { component: 'Rear Pads', measured: '', minimum: '' },
-];
 
 const defaultHandover: HandoverData = {
   vehicleInspected: false, cosmeticAccepted: false, mileageConfirmed: false,
@@ -68,9 +60,6 @@ export const usePDIForm = () => {
     () => saved.current?.tyreMeasurements || [...defaultTyres]
   );
 
-  const [brakeMeasurements, setBrakeMeasurements] = useState<BrakeMeasurement[]>(
-    () => saved.current?.brakeMeasurements || [...defaultBrakes]
-  );
 
   const [mechanicalChecks, setMechanicalChecks] = useState<Record<string, boolean>>(
     () => saved.current?.mechanicalChecks || {}
@@ -93,7 +82,7 @@ export const usePDIForm = () => {
         localStorage.setItem(AUTOSAVE_KEY, JSON.stringify({
           reportId, reportDate,
           vehicleDetails, damages, damageNotes,
-          tyreMeasurements, brakeMeasurements,
+          tyreMeasurements,
           mechanicalChecks, mechanicalNotes,
           craChecks, craConfirmed, tcAccepted, handover,
         }));
@@ -102,7 +91,7 @@ export const usePDIForm = () => {
     return () => clearTimeout(timer);
   }, [
     reportId, reportDate, vehicleDetails, damages, damageNotes,
-    tyreMeasurements, brakeMeasurements,
+    tyreMeasurements,
     mechanicalChecks, mechanicalNotes,
     craChecks, craConfirmed, tcAccepted, handover,
   ]);
@@ -123,9 +112,6 @@ export const usePDIForm = () => {
     setTyreMeasurements(prev => prev.map((t, i) => i === index ? { ...t, treadDepth } : t));
   }, []);
 
-  const updateBrake = useCallback((index: number, field: 'measured' | 'minimum', value: string) => {
-    setBrakeMeasurements(prev => prev.map((b, i) => i === index ? { ...b, [field]: value } : b));
-  }, []);
 
   const toggleMechanical = useCallback((check: string) => {
     setMechanicalChecks(prev => ({ ...prev, [check]: !prev[check] }));
@@ -167,7 +153,7 @@ export const usePDIForm = () => {
     vehicleDetails, updateVehicle,
     damages, addDamage, removeDamage, damageNotes, setDamageNotes,
     tyreMeasurements, updateTyre,
-    brakeMeasurements, updateBrake,
+    
     mechanicalChecks, toggleMechanical, mechanicalNotes, setMechanicalNotes,
     craChecks, toggleCRA, craConfirmed, setCraConfirmed,
     tcAccepted, setTcAccepted,
