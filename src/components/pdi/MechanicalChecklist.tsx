@@ -30,7 +30,7 @@ export const MechanicalChecklist = ({ checks, onToggle, notes, onNotesChange }: 
   return (
     <section className="pdi-section pdi-section-card pdi-accent-indigo">
       <div className="pdi-section-header">
-        <span className="pdi-section-number pdi-num-indigo">6</span>
+        <span className="pdi-section-number pdi-num-indigo">5</span>
         <Wrench className="h-5 w-5 text-indigo-600" />
         <h2 className="pdi-section-title">Mechanical Checklist</h2>
         <div className="ml-auto flex items-center gap-3 no-print">
