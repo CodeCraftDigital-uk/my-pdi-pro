@@ -11,13 +11,14 @@ import {
   CheckCircle2,
   FileSignature,
   Scale,
-  ChevronDown,
   BookOpen,
   Gavel,
   Car,
   FileText,
   Camera,
+  ChevronUp,
 } from 'lucide-react';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import autoprovIcon from '@/assets/autoprov_icon.png';
 
 interface ToolCard {
@@ -153,12 +154,41 @@ const legalFrameworks = [
   },
 ];
 
+const navLinks = [
+  { label: 'PDI Report', path: '/pdi' },
+  { label: 'Distance Sale', path: '/distance-sale' },
+  { label: 'Dispute Builder', path: '/dispute-response' },
+  { label: 'Remote Capture', path: '/remote-capture' },
+];
+
 const Landing = () => {
   const navigate = useNavigate();
-  const [openFaq, setOpenFaq] = useState<number | null>(null);
+
+  const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50">
+
+      {/* ── Persistent Navigation ── */}
+      <nav className="sticky top-0 z-50 bg-[#0f2240]/95 backdrop-blur border-b border-white/10 shadow-sm">
+        <div className="max-w-5xl mx-auto px-6 py-2.5 flex items-center gap-6">
+          <button onClick={() => navigate('/')} className="flex items-center gap-2 shrink-0">
+            <img src={autoprovIcon} alt="AutoProv" className="w-7 h-7 object-contain" />
+            <span className="text-sm font-bold text-white tracking-tight hidden sm:inline">AutoProv</span>
+          </button>
+          <div className="flex-1 flex items-center gap-1 overflow-x-auto">
+            {navLinks.map((link) => (
+              <button
+                key={link.path}
+                onClick={() => navigate(link.path)}
+                className="text-xs font-medium text-slate-300 hover:text-white px-3 py-1.5 rounded-md hover:bg-white/10 transition-colors whitespace-nowrap"
+              >
+                {link.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      </nav>
 
       {/* ── Hero ── */}
       <header
@@ -261,7 +291,8 @@ const Landing = () => {
                     ? (e) => { if (e.key === 'Enter' || e.key === ' ') navigate(tool.path!); }
                     : undefined
                 }
-                aria-label={isActive ? `Launch ${tool.title}` : undefined}
+                aria-label={isActive ? `Launch ${tool.title}` : `${tool.title} — coming soon`}
+                aria-disabled={!isActive ? true : undefined}
               >
                 {/* Status badge */}
                 <span
@@ -412,7 +443,7 @@ const Landing = () => {
             </div>
           </div>
 
-          {/* ── FAQ / AEO Section ── */}
+          {/* ── FAQ / AEO Section — Radix Accordion ── */}
           <div>
             <h3 className="text-xl font-bold text-slate-800 mb-2 text-center">
               Frequently Asked Questions
@@ -420,30 +451,23 @@ const Landing = () => {
             <p className="text-sm text-slate-500 text-center mb-8">
               Common questions from UK used car dealers about compliance, PDI reports, and consumer law
             </p>
-            <div className="max-w-3xl mx-auto space-y-3">
-              {faqs.map((faq, i) => (
-                <div
-                  key={i}
-                  className="border border-slate-200 rounded-xl overflow-hidden bg-white"
-                >
-                  <button
-                    className="w-full flex items-center justify-between gap-4 px-6 py-4 text-left hover:bg-slate-50 transition-colors"
-                    onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                    aria-expanded={openFaq === i}
+            <div className="max-w-3xl mx-auto">
+              <Accordion type="single" collapsible className="space-y-3">
+                {faqs.map((faq, i) => (
+                  <AccordionItem
+                    key={i}
+                    value={`faq-${i}`}
+                    className="border border-slate-200 rounded-xl overflow-hidden bg-white px-6"
                   >
-                    <span className="text-sm font-semibold text-slate-800">{faq.q}</span>
-                    <ChevronDown
-                      size={16}
-                      className={`shrink-0 text-slate-400 transition-transform duration-200 ${openFaq === i ? 'rotate-180' : ''}`}
-                    />
-                  </button>
-                  {openFaq === i && (
-                    <div className="px-6 pb-5 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-4">
+                    <AccordionTrigger className="text-sm font-semibold text-slate-800 hover:no-underline py-4">
+                      {faq.q}
+                    </AccordionTrigger>
+                    <AccordionContent className="text-sm text-slate-600 leading-relaxed pb-5 pt-0">
                       {faq.a}
-                    </div>
-                  )}
-                </div>
-              ))}
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
             </div>
           </div>
 
@@ -475,17 +499,38 @@ const Landing = () => {
 
       {/* ── Footer ── */}
       <footer
-        className="border-t py-6"
+        className="border-t py-8"
         style={{ background: '#0f2240', borderColor: 'rgba(255,255,255,0.08)' }}
       >
-        <div className="max-w-5xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs">
-          <div className="flex items-center gap-2 text-slate-400">
-            <img src={autoprovIcon} alt="" className="w-5 h-5 opacity-70 object-contain" />
-            <span className="font-semibold text-slate-300">AutoProv Compliance Tools</span>
-            <span className="text-slate-600">·</span>
-            <span>Part of the AutoProv Platform</span>
+        <div className="max-w-5xl mx-auto px-6 space-y-6">
+          {/* Footer nav links */}
+          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+            {navLinks.map((link) => (
+              <button
+                key={link.path}
+                onClick={() => navigate(link.path)}
+                className="text-xs font-medium text-slate-400 hover:text-white transition-colors"
+              >
+                {link.label}
+              </button>
+            ))}
+            <button
+              onClick={scrollToTop}
+              className="text-xs font-medium text-slate-400 hover:text-white transition-colors flex items-center gap-1"
+            >
+              <ChevronUp size={12} /> Back to Top
+            </button>
           </div>
-          <span className="text-slate-500">CRA 2015 Compliant &mdash; © {new Date().getFullYear()} AutoProv</span>
+
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-2 text-xs border-t border-white/10 pt-5">
+            <div className="flex items-center gap-2 text-slate-400">
+              <img src={autoprovIcon} alt="" className="w-5 h-5 opacity-70 object-contain" />
+              <span className="font-semibold text-slate-300">AutoProv Compliance Tools</span>
+              <span className="text-slate-600">·</span>
+              <span>Part of the AutoProv Platform</span>
+            </div>
+            <span className="text-slate-500">CRA 2015 Compliant &mdash; © {new Date().getFullYear()} AutoProv</span>
+          </div>
         </div>
       </footer>
 

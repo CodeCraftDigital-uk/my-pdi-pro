@@ -22,6 +22,9 @@ const RemoteCapture = () => {
   const { data: completedRequests = [], isLoading: loadingCompleted } = useCaptureRequests('completed');
   const { data: archivedRequests = [], isLoading: loadingArchived } = useCaptureRequests('archived');
 
+  // Auto-refresh dashboard every 30 seconds
+  // Handled via refetchInterval in the hook below
+
   const allActive = [...activeRequests, ...inProgressRequests];
 
   if (selectedRequest) {

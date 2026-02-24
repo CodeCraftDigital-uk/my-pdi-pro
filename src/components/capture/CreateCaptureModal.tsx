@@ -25,8 +25,8 @@ const CreateCaptureModal = ({ onClose, onCreated }: CreateCaptureModalProps) => 
   const [vehicleReg, setVehicleReg] = useState('');
   const [vehicleVin, setVehicleVin] = useState('');
   const [internalNotes, setInternalNotes] = useState('');
-  const [dealerName, setDealerName] = useState('');
-  const [dealerEmail, setDealerEmail] = useState('');
+  const [dealerName, setDealerName] = useState(() => localStorage.getItem('autoprov_dealer_name') || '');
+  const [dealerEmail, setDealerEmail] = useState(() => localStorage.getItem('autoprov_dealer_email') || '');
   const [expiryPreset, setExpiryPreset] = useState('48h');
   const [requiredSteps, setRequiredSteps] = useState<RequiredSteps>(defaultRequiredSteps);
   const [createdRequest, setCreatedRequest] = useState<CaptureRequest | null>(null);
@@ -53,6 +53,10 @@ const CreateCaptureModal = ({ onClose, onCreated }: CreateCaptureModalProps) => 
       return;
     }
     try {
+      // Persist dealer details for next time
+      if (dealerName.trim()) localStorage.setItem('autoprov_dealer_name', dealerName.trim());
+      if (dealerEmail.trim()) localStorage.setItem('autoprov_dealer_email', dealerEmail.trim());
+
       const result = await createMutation.mutateAsync({
         seller_name: sellerName.trim(),
         seller_email: sellerEmail.trim() || undefined,

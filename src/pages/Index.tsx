@@ -12,7 +12,7 @@ import { CustomerHandover } from '@/components/pdi/CustomerHandover';
 import { TermsAndConditions } from '@/components/pdi/TermsAndConditions';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { Printer, Download, AlertCircle, CheckCircle2, ChevronUp, ChevronLeft } from 'lucide-react';
+import { Printer, Download, AlertCircle, CheckCircle2, ChevronUp, ChevronLeft, RotateCcw } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -40,6 +40,7 @@ const Index = () => {
   const [errors, setErrors] = useState<string[]>([]);
   const [showConfirm, setShowConfirm] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [showResetConfirm, setShowResetConfirm] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
   // Track scroll for "back to top" button
@@ -330,6 +331,15 @@ const Index = () => {
             <Download className="h-4 w-4" />
             Download PDF
           </Button>
+          <Button
+            onClick={() => setShowResetConfirm(true)}
+            variant="ghost"
+            size="lg"
+            className="gap-2 text-muted-foreground"
+          >
+            <RotateCcw className="h-4 w-4" />
+            New Report
+          </Button>
           <div className="ml-auto text-right hidden sm:block">
             {requiredRemaining > 0 ? (
               <p className="text-xs text-muted-foreground">
@@ -372,6 +382,22 @@ const Index = () => {
           </div>
           <DialogFooter className="justify-center">
             <Button onClick={() => setShowSuccess(false)}>Close</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Reset confirmation dialog */}
+      <Dialog open={showResetConfirm} onOpenChange={setShowResetConfirm}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Start New Report?</DialogTitle>
+            <DialogDescription>
+              This will clear all entered data and start a fresh PDI report. This action cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowResetConfirm(false)}>Cancel</Button>
+            <Button variant="destructive" onClick={() => form.resetForm()}>Clear & Start New</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

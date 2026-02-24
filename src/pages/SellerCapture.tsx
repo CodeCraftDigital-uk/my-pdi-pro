@@ -156,13 +156,23 @@ const SellerCapture = () => {
   const canAdvance = (): boolean => {
     if (currentStepKey === 'intro') return authorised;
     if (currentStepKey === 'declaration') return declarationName.trim().length > 0 && declarationConfirmed;
-    // For capture steps, check all required sub-captures are confirmed
-    // We'll be lenient for MVP — require at least one confirmed capture per step
     if (currentStepKey === 'damage') return noDamageConfirmed || confirmedDamage.some(Boolean);
     if (currentStepKey === 'service_history') return confirmedService.size > 0;
-    // For other multi-image steps, check if relevant sub-steps have at least one confirmed
-    const stepConfirmed = Array.from(confirmedSteps).filter(k => k.startsWith(currentStepKey.replace('exterior', 'exterior_').replace('interior', 'interior_').replace('dashboard', 'dashboard_').replace('tyres', 'tyre_').slice(0, -1)));
-    return confirmedSteps.size > 0; // Simplified — will refine
+    if (currentStepKey === 'vin') return confirmedSteps.has('vin_plate');
+    if (currentStepKey === 'walkaround') return confirmedSteps.has('walkaround_video');
+
+    // Multi-image steps: require at least one sub-capture confirmed for each step
+    const prefixMap: Record<string, string> = {
+      exterior: 'exterior_',
+      interior: 'interior_',
+      dashboard: 'dashboard_',
+      tyres: 'tyre_',
+    };
+    const prefix = prefixMap[currentStepKey];
+    if (prefix) {
+      return Array.from(confirmedSteps).some(k => k.startsWith(prefix));
+    }
+    return false;
   };
 
   // Loading / error states
