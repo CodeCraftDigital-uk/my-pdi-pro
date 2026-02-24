@@ -1,201 +1,157 @@
 
 
-# Remote Appraisal and Vehicle Capture Tool — Implementation Plan
+# AutoProv Site Audit and Improvement Plan
 
-## Overview
+## Audit Summary
 
-Build a structured, mobile-first remote vehicle inspection capture system within AutoProv. Dealers create capture requests with configurable steps, generate secure tokenised links, and sellers complete a guided media capture flow on their mobile device. Submitted media is stored securely and made available to the dealer for manual review.
-
-No authentication is required for Phase 1 (MVP). No valuation or pricing logic will be included.
+After a thorough review of every page, component, hook, edge function, database schema, SEO assets, and styling, the following improvement areas have been identified. They are grouped by priority and category.
 
 ---
 
-## What Gets Built
+## 1. UX and Usability Improvements
 
-### 1. Database Tables (5 tables)
+### 1.1 Landing Page -- Missing Navigation and Footer Links
+The landing page footer has no links to individual tools, a privacy policy, or contact information. The header has no persistent navigation. Users arriving from search have no way to navigate between tools without returning to the landing page.
 
-**capture_requests** — stores each capture request created by a dealer
-- id (UUID, primary key)
-- token (unique string for the public link)
-- dealer_name, dealer_email (text)
-- seller_name (required), seller_email, seller_phone
-- vehicle_registration, vehicle_vin
-- internal_notes
-- expires_at (timestamp)
-- required_steps (JSONB — which capture steps are toggled on)
-- status (enum: pending, in_progress, completed, expired, archived)
-- created_at
+**Fix:** Add a simple top navigation bar (logo + tool links) and expand the footer with tool links and a "Back to Top" button.
 
-**capture_submissions** — stores the seller's completed submission
-- id (UUID, primary key)
-- capture_request_id (FK)
-- declaration_name (text)
-- declaration_confirmed (boolean)
-- submitted_at (timestamp)
-- ip_address, user_agent, device_type (text)
-- no_damage_confirmed (boolean)
+### 1.2 PDI Tool -- No "Start New" / Reset Button
+The PDI form (`/pdi`) has no way to clear the form and start a fresh report without manually refreshing the browser. The Distance Sale and Dispute tools both have reset buttons ("Start New Pack" / "New Case"), but PDI does not.
 
-**capture_media** — stores references to uploaded files
-- id (UUID, primary key)
-- capture_request_id (FK)
-- submission_id (FK)
-- step (text — e.g. "exterior_front", "interior_dashboard")
-- file_path (text — path in storage bucket)
-- file_type (text — image/video)
-- file_size (integer)
-- uploaded_at (timestamp)
+**Fix:** Add a "New Report" reset button to the PDI sticky bottom bar, with a confirmation dialog (matching the pattern in DistanceSale.tsx).
 
-**capture_notes** — dealer internal notes added during review
-- id (UUID, primary key)
-- capture_request_id (FK)
-- note_text (text)
-- created_at
+### 1.3 PDI Tool -- No Autosave
+The Distance Sale and Dispute tools both autosave to localStorage. The PDI form does not -- if the user accidentally navigates away, all data is lost.
 
-**capture_status_log** — tracks status changes for audit
-- id, capture_request_id, old_status, new_status, changed_at
+**Fix:** Add localStorage autosave to the PDI form (matching the `AUTOSAVE_KEY` pattern already used in DistanceSale.tsx and DisputeResponse.tsx).
 
-All tables will have RLS disabled for the MVP (no auth), with a plan to add policies when authentication is introduced.
+### 1.4 Seller Capture -- canAdvance() Logic is Incomplete
+In `SellerCapture.tsx` line 164-165, the `canAdvance()` function for multi-image steps (exterior, interior, dashboard, tyres) has a simplified check (`confirmedSteps.size > 0`) with a comment "will refine". This means a user can skip required sub-captures.
 
-### 2. Storage Bucket
+**Fix:** Implement proper per-step validation. For example, exterior should require all 4 angles confirmed, interior all 5 areas, etc. -- or at minimum one per sub-step.
 
-A private **capture-media** storage bucket for all uploaded images and videos. Public read access via signed URLs only. File size limits enforced (images max 10MB, videos max 50MB).
+### 1.5 Remote Capture Dashboard -- No Refresh / Real-time Updates
+When a seller completes a capture, the dealer dashboard does not update until the page is manually refreshed.
 
-### 3. New Pages and Routes
+**Fix:** Add `refetchInterval` (e.g. 30 seconds) to the `useCaptureRequests` queries, or enable Supabase Realtime on `capture_requests`.
 
-| Route | Purpose |
-|---|---|
-| `/remote-capture` | Dealer dashboard — create, view, manage capture requests |
-| `/capture/:token` | Public seller capture interface — guided mobile flow |
+### 1.6 404 Page -- Generic and Unbranded
+The NotFound page is completely unbranded -- plain text on a grey background with no AutoProv styling.
 
-### 4. Edge Function
-
-**send-capture-link** — sends the capture link to the seller's email using Resend. This requires a `RESEND_API_KEY` secret from the user. Copy-link functionality works immediately without this.
-
-### 5. Landing Page Update
-
-Add "Remote Capture" as a new active tool card on the landing page, with the Camera icon, linking to `/remote-capture`.
+**Fix:** Restyle the 404 page to match the AutoProv brand (dark header, gold accent, logo, link back to portal).
 
 ---
 
-## Dealer Dashboard (`/remote-capture`)
+## 2. Functional Improvements
 
-Three tabs: **Active**, **Completed**, **Archived**
+### 2.1 Remote Capture -- Expired Requests Not Auto-Updated
+Capture requests that pass their `expires_at` remain as "pending" in the database indefinitely. The expiry is only enforced on the seller-facing page (client-side check). The dealer dashboard shows them as "Expired" via a client-side check too, but the underlying status never changes.
 
-### Create New Capture Request (modal/form)
-- Seller Name (required), Email, Phone
-- Vehicle Registration, VIN
-- Internal Notes
-- Link Expiry selector (24h / 48h / 72h / Custom date)
-- Toggleable capture steps: Exterior Photos, Damage Close-ups, Interior Photos, Dashboard (Ignition On), VIN Plate, Tyre Tread Photos, Service History, Walkaround Video
-- "Generate Secure Link" button
+**Fix:** Add a database function or scheduled check that transitions `pending` requests past their expiry to `expired` status. Alternatively, add a simple check in `useCaptureRequests` that auto-updates expired records on fetch.
 
-### Request List View
-- Card-based layout showing seller name, vehicle ref, status badge, expiry countdown
-- Click to open detailed review
+### 2.2 Remote Capture -- No Dealer Name Persistence
+Each time a dealer creates a new capture request, they must re-enter their dealer name and email. There is no persistence of dealer details.
 
-### Dealer Review Interface
-- Structured media sections: Exterior, Damage, Interior, Dashboard, VIN, Tyres, Video
-- Download individual files or full ZIP (via edge function)
-- Add internal notes
-- Set status: Approved / Further Review / Reject / Negotiate
-- Generate structured PDF summary (browser print-to-PDF, matching existing PDI pattern)
+**Fix:** Save the last-used dealer name and email to localStorage, and pre-fill the create modal on next use.
+
+### 2.3 Dispute Response -- Toast Says "Email resent" Instead of "Email sent"
+In `CaptureRequestCard.tsx` line 54, the success toast message says "Email resent" even on the first send.
+
+**Fix:** Change the toast message to "Email sent".
 
 ---
 
-## Seller Capture Interface (`/capture/:token`)
+## 3. Accessibility and Mobile Improvements
 
-White background, large buttons, mobile-first. No login required.
+### 3.1 FAQ Section -- No Animation on Open/Close
+The FAQ accordion uses a simple conditional render (show/hide) with no transition. This feels abrupt.
 
-### Flow (9 steps, only enabled steps shown):
+**Fix:** Add a smooth height transition or use the existing Radix Accordion component (already installed) for the FAQ section.
 
-1. **Introduction** — dealer name, vehicle ref, authorisation confirmation checkbox
-2. **Exterior Capture** — front/rear/left/right with camera overlay guidance, retake option
-3. **Damage Disclosure** — upload damage photos OR confirm "No visible damage"
-4. **Interior Capture** — driver seat, passenger seat, rear seats, dashboard, centre console
-5. **Dashboard Capture** — ignition on, odometer visible, warning lights visible
-6. **VIN Plate** — capture with location guidance text
-7. **Tyre Tread** — each tyre close-up (if enabled)
-8. **Walkaround Video** — 30-60 second video with guidance (if enabled)
-9. **Seller Declaration** — typed full name, auto-generated date/timestamp, confirmation checkbox, disclaimer text
+### 3.2 Tool Cards -- Keyboard Navigation Incomplete
+The landing page tool cards have `role="button"` and `tabIndex` but the "Coming Soon" card is not clearly distinguished for keyboard users (no `aria-disabled`).
 
-Progress bar shown throughout. Steps cannot be skipped. Retake available before confirming each capture.
+**Fix:** Add `aria-disabled="true"` to the coming-soon card.
 
-### Expiry Enforcement
-- Token validated on page load
-- Expired links show a clear "This link has expired" message
-- No uploads accepted after expiry
+### 3.3 Print Layouts -- Capture Review Panel Print Missing Videos
+In the capture review print layout, videos are filtered out (`m.file_type !== 'video'`), but there is no indication that video content exists. A dealer printing the report might not realise videos were captured.
+
+**Fix:** Add a note in the print layout: "X walkaround video(s) captured -- view in dashboard" when video media exists.
 
 ---
 
-## Technical Architecture
+## 4. Code Quality and Maintainability
 
-```text
-+-------------------+       +------------------+       +-------------------+
-|  Dealer Dashboard |       |   Database       |       | Seller Capture UI |
-|  /remote-capture  |------>| capture_requests |<------| /capture/:token   |
-|                   |       | capture_media    |       |                   |
-|  Create request   |       | capture_submissions      |  Upload media     |
-|  Review media     |       +------------------+       |  Declaration      |
-|  Set status       |              |                   +-------------------+
-+-------------------+              v
-                           +------------------+
-                           | Storage Bucket   |
-                           | capture-media    |
-                           +------------------+
-```
+### 4.1 Type Safety -- Excessive `as any` and `as unknown` Casting
+Throughout `useCaptureRequest.ts`, every database query result is cast through `as unknown as CaptureRequest`. This suppresses type checking. The root cause is the auto-generated Supabase types not matching the custom TypeScript types.
 
-### File Structure (new files)
+**Fix:** Align the custom `CaptureRequest` type with the auto-generated Supabase types, or create proper type-safe wrapper functions that map from the database type to the application type.
 
-```text
-src/pages/RemoteCapture.tsx              — dealer dashboard page
-src/pages/SellerCapture.tsx              — public seller capture page
-src/components/capture/
-  CreateCaptureModal.tsx                 — new request form
-  CaptureRequestCard.tsx                 — list item card
-  CaptureReviewPanel.tsx                 — dealer review interface
-  SellerStep*.tsx (9 files)             — one per capture step
-  CaptureProgressBar.tsx                 — step progress indicator
-  CameraCapture.tsx                      — camera/file input with overlay
-  CapturePrintLayout.tsx                 — PDF print layout
-src/types/capture.ts                     — TypeScript types
-src/hooks/useCaptureRequest.ts           — data fetching hooks
-supabase/functions/send-capture-link/index.ts  — email sending
-```
+### 4.2 Edge Function -- `send-capture-link` Uses Deprecated Deno API
+The send-capture-link function uses `import { serve } from "https://deno.land/std@0.190.0/http/server.ts"` (deprecated), while the dispute-response function correctly uses `Deno.serve()`.
 
-### Key Design Decisions
+**Fix:** Update `send-capture-link/index.ts` to use `Deno.serve()` for consistency and future-proofing.
 
-- **No auth for MVP**: All capture requests are stored without a dealer user ID. When auth is added later, a `dealer_id` column will be added and linked
-- **Token security**: UUIDs used as tokens, validated server-side, with expiry enforcement
-- **Media upload**: Direct to storage bucket using the Supabase JS client, with file type and size validation on the client
-- **Existing patterns followed**: Step-based wizard UI (matching Dispute Response Builder), card-based dashboard layout (matching Landing page), print-to-PDF approach (matching PDI tool)
-- **AutoProv dark theme** for dealer interface, white clean theme for seller interface
-- **Disclaimers included**: "This remote capture does not replace a physical inspection" shown in seller flow
+### 4.3 CSS File is Very Large (1062 Lines)
+`src/index.css` is over 1000 lines with extensive print styles. This makes maintenance difficult.
 
-### Email Sending Note
+**Fix:** No immediate action required, but consider extracting print styles into a separate file or using Tailwind `@apply` more consistently in future.
 
-The "send via email" feature requires a Resend API key. You will be asked to provide this during implementation. The copy-link feature works without any additional setup.
+---
+
+## 5. SEO and Content Improvements
+
+### 5.1 OG Image URL Uses Temporary Signed URL
+The Open Graph image in `index.html` uses a Google Cloud Storage signed URL with an expiry (`Expires=1771179257`). Once this expires (February 2026), social media previews will break.
+
+**Fix:** Host the OG image permanently at `/og-image.png` or another stable URL and update the meta tags.
+
+### 5.2 FAQ Schema Missing Remote Capture Answer Update
+The FAQ schema in the JSON-LD (line 160) still references "three tools" in the first answer, even though the visible FAQ text on the page has been updated to four. The schema and page content are out of sync.
+
+**Fix:** Update the FAQPage JSON-LD `acceptedAnswer` for "What are the AutoProv Compliance Tools?" to reference all four tools.
+
+### 5.3 Canonical URL Points to autexa.ai but Published URL is lovable.app
+The canonical URL is `https://autexa.ai/` but the live published URL is `https://my-pdi-pro.lovable.app`. If autexa.ai is not yet set up as a custom domain, search engines may encounter a mismatch.
+
+**Fix:** Verify that `autexa.ai` is configured as a custom domain. If not, temporarily update the canonical to the published URL, or set up the custom domain.
+
+---
+
+## 6. Performance
+
+### 6.1 Capture Review Panel -- Sequential Signed URL Loading
+In `CaptureReviewPanel.tsx`, signed URLs are loaded sequentially in a `for` loop (line 44). For captures with many images, this creates a waterfall effect.
+
+**Fix:** Use `Promise.all()` to load all signed URLs in parallel.
 
 ---
 
 ## Implementation Sequence
 
-1. Database migration — create all tables and storage bucket
-2. TypeScript types and hooks
-3. Seller capture interface (public flow — the core product)
-4. Dealer dashboard (create requests, review submissions)
-5. Landing page update (add tool card)
-6. Email sending edge function (requires Resend API key)
-7. PDF print layout for dealer review
+1. **Quick wins** (items 1.2, 2.2, 2.3, 3.2, 4.2, 5.2): Simple fixes, high impact, low risk
+2. **UX improvements** (items 1.1, 1.3, 1.4, 1.6, 3.1, 3.3): Better user experience
+3. **Functional fixes** (items 1.5, 2.1, 6.1): Reliability and performance
+4. **Technical debt** (items 4.1, 5.1, 5.3): Long-term maintainability
 
 ---
 
-## What Is NOT Included
+## Technical Details
 
-- No AI valuation or pricing engine
-- No automatic damage detection
-- No OCR mileage extraction
-- No third-party API integrations
-- No authentication (deferred to future phase)
-- No virus scanning (deferred — file type validation only)
-- No ZIP download (deferred — individual file download only in Phase 1)
+### Files to Modify
+
+| File | Changes |
+|---|---|
+| `src/pages/Landing.tsx` | Add nav bar, expand footer, improve FAQ with accordion, add aria-disabled |
+| `src/pages/Index.tsx` | Add autosave, add "New Report" reset button |
+| `src/pages/NotFound.tsx` | Rebrand to match AutoProv styling |
+| `src/pages/SellerCapture.tsx` | Fix canAdvance() validation logic |
+| `src/pages/RemoteCapture.tsx` | Add refetchInterval to queries |
+| `src/hooks/useCaptureRequest.ts` | Add auto-expiry logic, improve type safety, parallel URL loading |
+| `src/hooks/usePDIForm.ts` | Add localStorage persistence |
+| `src/components/capture/CaptureReviewPanel.tsx` | Parallel signed URL loading, video note in print |
+| `src/components/capture/CreateCaptureModal.tsx` | Pre-fill dealer details from localStorage |
+| `src/components/capture/CaptureRequestCard.tsx` | Fix "Email resent" toast text |
+| `supabase/functions/send-capture-link/index.ts` | Migrate to Deno.serve() |
+| `index.html` | Fix FAQ schema, fix OG image URL |
 
