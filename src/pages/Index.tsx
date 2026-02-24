@@ -5,7 +5,7 @@ import { HeaderSection } from '@/components/pdi/HeaderSection';
 import { VehicleDetails } from '@/components/pdi/VehicleDetails';
 import { VehicleDiagram } from '@/components/pdi/VehicleDiagram';
 import { TyreSection } from '@/components/pdi/TyreSection';
-import { BrakeSection } from '@/components/pdi/BrakeSection';
+
 import { MechanicalChecklist } from '@/components/pdi/MechanicalChecklist';
 import { CRACompliance } from '@/components/pdi/CRACompliance';
 import { CustomerHandover } from '@/components/pdi/CustomerHandover';
@@ -27,7 +27,7 @@ const SECTION_IDS = {
   vehicle: 'section-vehicle',
   cosmetic: 'section-cosmetic',
   tyres: 'section-tyres',
-  brakes: 'section-brakes',
+  
   mechanical: 'section-mechanical',
   cra: 'section-cra',
   handover: 'section-handover',
@@ -235,19 +235,12 @@ const Index = () => {
           </div>
         </div>
 
-        {/* Print group: Tyres + Brakes + Mechanical + CRA */}
+        {/* Print group: Tyres + Mechanical + CRA */}
         <div className="print-page-group">
           <div id={SECTION_IDS.tyres}>
             <TyreSection
               measurements={form.tyreMeasurements}
               onUpdate={form.updateTyre}
-            />
-          </div>
-
-          <div id={SECTION_IDS.brakes}>
-            <BrakeSection
-              measurements={form.brakeMeasurements}
-              onUpdate={form.updateBrake}
             />
           </div>
 
