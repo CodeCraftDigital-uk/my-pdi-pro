@@ -25,7 +25,7 @@ export const CustomerHandover = ({ data, onUpdate }: Props) => {
   return (
     <section className="pdi-section pdi-section-card pdi-accent-purple">
       <div className="pdi-section-header">
-        <span className="pdi-section-number pdi-num-purple">7</span>
+        <span className="pdi-section-number pdi-num-purple">6</span>
         <ClipboardCheck className="h-5 w-5 text-purple-600" />
         <h2 className="pdi-section-title">Customer Handover &amp; Acceptance</h2>
       </div>

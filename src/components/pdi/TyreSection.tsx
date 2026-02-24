@@ -22,7 +22,7 @@ export const TyreSection = ({ measurements, onUpdate }: Props) => {
   return (
     <section className="pdi-section pdi-section-card pdi-accent-green">
       <div className="pdi-section-header">
-        <span className="pdi-section-number pdi-num-green">4</span>
+        <span className="pdi-section-number pdi-num-green">3</span>
         <CircleDot className="h-5 w-5 text-green-600" />
         <h2 className="pdi-section-title">Tyre Measurements</h2>
       </div>
