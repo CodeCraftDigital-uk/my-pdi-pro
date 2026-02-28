@@ -28,7 +28,7 @@ const Landing = () => {
           Automotive Compliance Platform for UK Dealers&nbsp;&amp;&nbsp;Traders
         </p>
         <a
-          href="https://www.autoprov.ai"
+          href="https://autoprov.ai"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 bg-[#c9a227] hover:bg-[#b8921f] text-[#0f2137] font-semibold text-lg px-8 py-3 rounded-lg transition-colors"
@@ -71,7 +71,7 @@ const Landing = () => {
       {/* Footer */}
       <footer className="border-t border-[#1e3a5f] py-8 text-center text-sm text-gray-500">
         <a
-          href="https://www.autoprov.ai"
+          href="https://autoprov.ai"
           target="_blank"
           rel="noopener noreferrer"
           className="text-[#c9a227] hover:underline"
